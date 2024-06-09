@@ -8,7 +8,7 @@ function App() {
   const [text, setText] = useState("");
   const [loading, setLoading] = useState(false);
   const [copyText, setCopyText] = useState(false);
-  const [crop, setCrop] = useState(true);
+  const [crop, setCrop] = useState(false);
 
   const handleChange = (event) => {
     if (event.target.files && event.target.files[0]) {
