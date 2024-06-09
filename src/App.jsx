@@ -1,7 +1,5 @@
-import { useState, useRef } from "react";
+import { useState } from "react";
 import Tesseract from "tesseract.js";
-import ReactCrop from "react-image-crop";
-import "react-image-crop/dist/ReactCrop.css";
 import "./App.css";
 
 function App() {
@@ -9,49 +7,11 @@ function App() {
   const [text, setText] = useState("");
   const [loading, setLoading] = useState(false);
   const [copyText, setCopyText] = useState(false);
-  const [crop, setCrop] = useState({ aspect: 1 });
-  const [completedCrop, setCompletedCrop] = useState(null);
-  const imageRef = useRef(null);
 
   const handleChange = (event) => {
     if (event.target.files && event.target.files[0]) {
-      const file = event.target.files[0];
-      const objectURL = URL.createObjectURL(file);
-      setImagePath(objectURL);
+      setImagePath(URL.createObjectURL(event.target.files[0]));
     }
-  };
-
-  const handleCropComplete = (crop) => {
-    setCompletedCrop(crop);
-  };
-
-  const getCroppedImg = () => {
-    if (!completedCrop || !imageRef.current) {
-      return;
-    }
-    const canvas = document.createElement("canvas");
-    const scaleX = imageRef.current.naturalWidth / imageRef.current.width;
-    const scaleY = imageRef.current.naturalHeight / imageRef.current.height;
-    canvas.width = completedCrop.width;
-    canvas.height = completedCrop.height;
-    const ctx = canvas.getContext("2d");
-
-    ctx.drawImage(
-      imageRef.current,
-      completedCrop.x * scaleX,
-      completedCrop.y * scaleY,
-      completedCrop.width * scaleX,
-      completedCrop.height * scaleY,
-      0,
-      0,
-      completedCrop.width,
-      completedCrop.height
-    );
-
-    canvas.toBlob((blob) => {
-      const croppedImageUrl = URL.createObjectURL(blob);
-      setImagePath(croppedImageUrl);
-    });
   };
 
   const handleClick = () => {
@@ -64,7 +24,8 @@ function App() {
           console.error(err);
         })
         .then((result) => {
-          const text = result.data.text;
+          let confidence = result.data.confidence;
+          let text = result.data.text;
           setText(text);
           setLoading(false);
         });
@@ -84,28 +45,17 @@ function App() {
     <div className="App p-4 md:max-w-3xl w-full mx-auto">
       <main className="flex flex-col items-center">
         <h3 className="text-xl mb-4">
-          {imagePath ? "Crop the Image" : "Image To Text"}
+          {imagePath ? "Selected Image" : "Image To Text"}
         </h3>
-        <div className="w-full mb-4">
+        <div className="h-[30vh] border border-dashed w-full mb-4">
           {imagePath && (
-            <ReactCrop
+            <img
               src={imagePath}
-              crop={crop}
-              ruleOfThirds
-              onImageLoaded={(img) => (imageRef.current = img)}
-              onChange={(newCrop) => setCrop(newCrop)}
-              onComplete={handleCropComplete}
+              className="mb-4 h-full w-fit mx-auto"
+              alt="uploaded"
             />
           )}
         </div>
-        {completedCrop && (
-          <button
-            onClick={getCroppedImg}
-            className="mb-4 px-4 py-2 border border-gray-300 w-fit mx-auto rounded-lg cursor-pointer bg-[#292929] text-white font-semibold"
-          >
-            Confirm Crop
-          </button>
-        )}
         <div className="flex flex-col border w-full py-2 rounded">
           <h3 className="text-xl mb-2 text-center">Extracted text</h3>
           <div className="relative mb-4 p-4 border border-gray-300 rounded w-[95%] mx-auto md:w-96">
