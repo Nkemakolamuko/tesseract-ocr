@@ -1,12 +1,14 @@
 import { useState } from "react";
 import Tesseract from "tesseract.js";
 import "./App.css";
+import ImageCropper from "./components/ImageCropper";
 
 function App() {
   const [imagePath, setImagePath] = useState("");
   const [text, setText] = useState("");
   const [loading, setLoading] = useState(false);
   const [copyText, setCopyText] = useState(false);
+  const [crop, setCrop] = useState(true);
 
   const handleChange = (event) => {
     if (event.target.files && event.target.files[0]) {
@@ -34,6 +36,43 @@ function App() {
     }
   };
 
+  // Generating Cropped Image When Done Button Clicked
+  const onCropDone = (imgCroppedArea) => {
+    const canvasEle = document.createElement("canvas");
+    canvasEle.width = imgCroppedArea.width;
+    canvasEle.height = imgCroppedArea.height;
+
+    const context = canvasEle.getContext("2d");
+
+    let imageObj1 = new Image();
+    imageObj1.src = imagePath;
+    imageObj1.onload = function () {
+      context.drawImage(
+        imageObj1,
+        imgCroppedArea.x,
+        imgCroppedArea.y,
+        imgCroppedArea.width,
+        imgCroppedArea.height,
+        0,
+        0,
+        imgCroppedArea.width,
+        imgCroppedArea.height
+      );
+
+      const dataURL = canvasEle.toDataURL("image/jpeg");
+
+      setImagePath(dataURL);
+      setCrop(false);
+    };
+  };
+
+  // Handle Cancel Button Click
+  const onCropCancel = () => {
+    setCrop(false);
+    // setImage("");
+  };
+
+  // Copy Image Text
   const handleCopy = () => {
     navigator.clipboard.writeText(text).then(() => {
       setCopyText(true);
@@ -42,7 +81,14 @@ function App() {
   };
 
   return (
-    <div className="App p-4 md:max-w-3xl w-full mx-auto">
+    <div className={`md:max-w-3xl ${!crop && "p-4"} w-full mx-auto relative`}>
+      {crop && (
+        <ImageCropper
+          image={imagePath}
+          onCropCancel={onCropCancel}
+          onCropDone={onCropDone}
+        />
+      )}
       <main className="flex flex-col items-center">
         <h3 className="text-xl mb-4">
           {imagePath ? "Selected Image" : "Image To Text"}
@@ -72,17 +118,30 @@ function App() {
 
           <input
             type="file"
+            accept="image/*"
             onChange={handleChange}
             className="hidden"
             id="file-input"
           />
           {!loading && (
-            <label
-              htmlFor="file-input"
-              className="mb-4 px-4 py-2 border border-gray-300 w-fit mx-auto rounded-lg cursor-pointer bg-[#292929] text-white font-semibold"
-            >
-              Select Image
-            </label>
+            <div className="flex items-center w-fit mx-auto gap-2">
+              <label
+                htmlFor="file-input"
+                className="mb-4 px-4 py-2 border border-gray-300 w-fit mx-auto rounded-lg cursor-pointer bg-[#292929] text-white font-semibold"
+              >
+                {imagePath ? "Choose Another Image" : "Choose Image"}
+              </label>
+              {imagePath && (
+                <p
+                  className="mb-4 px-4 py-2 border-2 border-gray-300 w-fit mx-auto rounded-lg cursor-pointer font-semibold"
+                  onClick={() => {
+                    setCrop(true);
+                  }}
+                >
+                  Crop Image
+                </p>
+              )}
+            </div>
           )}
 
           <div className="h-[1px] mb-2 w-full bg-gray-300"></div>
@@ -90,7 +149,7 @@ function App() {
           {imagePath ? (
             <button
               onClick={handleClick}
-              className={`bg-[#0000f1] text-white outline-double p-3 font-semibold w-[95%] md:w-[60%] mx-auto ${
+              className={`bg-[#0000f1] text-white outline-double md:p-3 p-2 font-semibold w-[95%] md:w-[60%] mx-auto ${
                 loading && "opacity-60 cursor-wait"
               } rounded disabled:opacity-50`}
               disabled={loading}
