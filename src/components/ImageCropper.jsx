@@ -16,7 +16,7 @@ function ImageCropper({ image, onCropDone, onCropCancel }) {
   };
 
   return (
-    <div className="absolute w-full h-[100vh] flex flex-col z-[50] bg-white">
+    <div className="absolute w-full h-[85vh] flex flex-col z-[50] bg-white">
       <div className="flex-grow relative">
         <Cropper
           image={image}
