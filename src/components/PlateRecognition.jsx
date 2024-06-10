@@ -4,7 +4,7 @@ import "../App.css";
 import ImageCropper from "./ImageCropper";
 import toast, { Toaster } from "react-hot-toast";
 import { db } from "../firebase";
-import { addDoc, collection } from "firebase/firestore";
+import { addDoc, collection, query, where, getDocs } from "firebase/firestore";
 import { useAuth } from "../UserContext";
 
 function PlateRecognition() {
@@ -43,7 +43,6 @@ function PlateRecognition() {
     }
   };
 
-  // Generating Cropped Image When Done Button Clicked
   const onCropDone = (imgCroppedArea) => {
     const canvasEle = document.createElement("canvas");
     canvasEle.width = imgCroppedArea.width;
@@ -73,12 +72,10 @@ function PlateRecognition() {
     };
   };
 
-  // Handle Cancel Button Click
   const onCropCancel = () => {
     setCrop(false);
   };
 
-  // Copy Image Text
   const handleCopy = () => {
     navigator.clipboard.writeText(text).then(() => {
       setCopyText(true);
@@ -87,23 +84,42 @@ function PlateRecognition() {
     });
   };
 
-  // Save Text to Firestore
   const handleSave = async () => {
     if (!currentUser) {
       toast.error("User not authenticated.");
       return;
     }
 
+    if (text.trim().length > 9) {
+      toast.error("Invalid Nigerian car plate number");
+      return;
+    }
+
     setSaving(true);
+
     try {
+      // Check for duplicate plate number
+      const q = query(
+        collection(db, "phoneNumbers"),
+        where("phoneNumber", "==", text)
+      );
+      const querySnapshot = await getDocs(q);
+
+      if (!querySnapshot.empty) {
+        toast.error("Plate number already exists.");
+        setSaving(false);
+        return;
+      }
+
+      // Save to Firestore if no duplicate found
       await addDoc(collection(db, "phoneNumbers"), {
         phoneNumber: text,
         userId: currentUser.uid,
       });
-      toast.success("Saved to Firestore!", { duration: 2000 });
+      toast.success("Saved to database!", { duration: 2000 });
     } catch (error) {
-      console.error("Error saving to Firestore: ", error);
-      toast.error("Error saving to Firestore.");
+      console.error("Error saving to database: ", error);
+      toast.error("Error saving to database.");
     } finally {
       setSaving(false);
     }
@@ -137,7 +153,9 @@ function PlateRecognition() {
           )}
         </div>
         <div className="flex flex-col border w-full py-2 rounded">
-          <h3 className="text-lg mb-2 text-center">Extracted text</h3>
+          <h3 className="text-lg mb-2 text-center">
+            Extracted Car Plate Number
+          </h3>
           <div className="relative mb-4 p-4 border border-gray-300 rounded w-[95%] mx-auto md:w-96">
             <p>{text}</p>
             {text && (
