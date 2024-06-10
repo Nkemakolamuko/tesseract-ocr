@@ -5,6 +5,7 @@ import ImageCropper from "./ImageCropper";
 import toast, { Toaster } from "react-hot-toast";
 import { db } from "../firebase";
 import { addDoc, collection } from "firebase/firestore";
+import { useAuth } from "../UserContext";
 
 function PlateRecognition() {
   const [imagePath, setImagePath] = useState("");
@@ -13,6 +14,8 @@ function PlateRecognition() {
   const [copyText, setCopyText] = useState(false);
   const [crop, setCrop] = useState(false);
   const [saving, setSaving] = useState(false);
+
+  const { currentUser } = useAuth();
 
   const handleChange = (event) => {
     if (event.target.files && event.target.files[0]) {
@@ -86,9 +89,17 @@ function PlateRecognition() {
 
   // Save Text to Firestore
   const handleSave = async () => {
+    if (!currentUser) {
+      toast.error("User not authenticated.");
+      return;
+    }
+
     setSaving(true);
     try {
-      await addDoc(collection(db, "plateNumbers"), { text });
+      await addDoc(collection(db, "phoneNumbers"), {
+        phoneNumber: text,
+        userId: currentUser.uid,
+      });
       toast.success("Saved to Firestore!", { duration: 2000 });
     } catch (error) {
       console.error("Error saving to Firestore: ", error);
@@ -113,8 +124,8 @@ function PlateRecognition() {
         />
       )}
       <main className="flex flex-col items-center">
-        <h3 className="text-xl mb-4">
-          {imagePath ? "Plate Number Image" : "Extract"}
+        <h3 className="text-lg mb-4">
+          {imagePath ? "Plate Number Image" : "Image Container"}
         </h3>
         <div className="h-[30vh] border border-dashed w-full mb-4">
           {imagePath && (
@@ -126,7 +137,7 @@ function PlateRecognition() {
           )}
         </div>
         <div className="flex flex-col border w-full py-2 rounded">
-          <h3 className="text-xl mb-2 text-center">Extracted text</h3>
+          <h3 className="text-lg mb-2 text-center">Extracted text</h3>
           <div className="relative mb-4 p-4 border border-gray-300 rounded w-[95%] mx-auto md:w-96">
             <p>{text}</p>
             {text && (
@@ -181,7 +192,7 @@ function PlateRecognition() {
             </button>
           ) : (
             <button
-              className="outline-double p-3 w-[95%] md:w-[60%] mx-auto font-semibold rounded disabled:opacity-50"
+              className="outline-double p-2 md:p-3 w-[95%] md:w-[60%] mx-auto font-semibold rounded disabled:opacity-50"
               disabled
             >
               No Image Selected
@@ -196,7 +207,7 @@ function PlateRecognition() {
               } rounded disabled:opacity-50`}
               disabled={saving}
             >
-              {saving ? "Saving..." : "Save to Firestore"}
+              {saving ? "Saving..." : "Save to database"}
             </button>
           )}
         </div>

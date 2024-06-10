@@ -1,22 +1,30 @@
 import React, { useState } from "react";
 import { GiHamburgerMenu } from "react-icons/gi";
 import Nav from "./Nav";
+import { useAuth } from "../UserContext";
 
 const Header = () => {
   const [isOpen, setIsOpen] = useState(false);
+  const { currentUser, userData, loading } = useAuth();
 
   const toggleNav = () => {
     setIsOpen(!isOpen);
   };
 
   return (
-    <div className="py-2 md:py-3 px-2 shadow-lg w-full flex items-center justify-between sticky top-0 z-[999] bg-white">
+    <div className="py-2 md:py-3 px-2 shadow-md w-full flex items-center justify-between sticky top-0 z-[999] bg-white">
       <GiHamburgerMenu className="w-6 h-6 cursor-pointer" onClick={toggleNav} />
 
       <Nav isOpen={isOpen} toggleNav={toggleNav} />
 
       <div className="flex items-center justify-between gap-2">
-        <p className="font-medium">CE Asese</p>
+        {loading ? (
+          "loading..."
+        ) : (
+          <p className="font-medium text-nowrap truncate">
+            {userData && userData.churchName}
+          </p>
+        )}
 
         <div className="rounded-full border-2 overflow-hidden w-fit">
           <img
