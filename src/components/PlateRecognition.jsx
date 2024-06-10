@@ -168,6 +168,18 @@ function PlateRecognition() {
             )}
           </div>
 
+          <div className="border border-gray-300 w-[95%] mx-auto mb-2 rounded">
+            <input
+              type="text"
+              value={text}
+              onChange={(e) => setText(e.target.value)}
+              className="p-2 md:p-3 w-full active:outline active:outline-offset-1 rounded"
+              placeholder="Type in plate number"
+            />
+          </div>
+
+          <p className="w-full mx-auto text-center bg-slate-300">or</p>
+
           <input
             type="file"
             accept="image/*"
@@ -176,7 +188,7 @@ function PlateRecognition() {
             id="file-input"
           />
           {!loading && (
-            <div className="flex items-center w-fit mx-auto gap-2">
+            <div className="flex items-center w-fit mx-auto gap-2 mt-2">
               <label
                 htmlFor="file-input"
                 className="mb-4 px-4 py-2 border border-gray-300 w-fit mx-auto rounded-lg cursor-pointer bg-[#292929] text-white font-semibold text-nowrap text-sm md:text-base"
