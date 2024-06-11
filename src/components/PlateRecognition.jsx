@@ -4,7 +4,14 @@ import "../App.css";
 import ImageCropper from "./ImageCropper";
 import toast, { Toaster } from "react-hot-toast";
 import { db } from "../firebase";
-import { addDoc, collection, query, where, getDocs } from "firebase/firestore";
+import {
+  addDoc,
+  collection,
+  query,
+  where,
+  getDocs,
+  serverTimestamp,
+} from "firebase/firestore";
 import { useAuth } from "../UserContext";
 
 function PlateRecognition() {
@@ -115,6 +122,7 @@ function PlateRecognition() {
       await addDoc(collection(db, "phoneNumbers"), {
         phoneNumber: text,
         userId: currentUser.uid,
+        createdAt: serverTimestamp(),
       });
       toast.success("Saved to database!", { duration: 2000 });
     } catch (error) {

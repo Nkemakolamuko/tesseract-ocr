@@ -1,7 +1,4 @@
-import { useState } from "react";
-import Tesseract from "tesseract.js";
-import "./App.css";
-import ImageCropper from "./components/ImageCropper";
+import React from "react";
 import { BrowserRouter, Route, Routes, useLocation } from "react-router-dom";
 import PlateRecognition from "./components/PlateRecognition";
 import WelcomePage from "./components/WelcomePage";
@@ -10,6 +7,7 @@ import Header from "./components/Header";
 import ProtectedRoute from "./components/ProtectedRoute";
 import Login from "./components/auth/Login";
 import Register from "./components/auth/Register";
+import { Toaster } from "react-hot-toast";
 
 function App() {
   const location = useLocation();
@@ -19,6 +17,7 @@ function App() {
 
   return (
     <div className="App">
+      <Toaster />
       {!hideHeaderPaths.includes(location.pathname) && <Header />}
       <Routes>
         <Route path="/register" element={<Register />} />
@@ -31,7 +30,14 @@ function App() {
             </ProtectedRoute>
           }
         />
-        <Route path="/add-new" element={<PlateRecognition />} />
+        <Route
+          path="/add-new"
+          element={
+            <ProtectedRoute>
+              <PlateRecognition />
+            </ProtectedRoute>
+          }
+        />
       </Routes>
     </div>
   );
