@@ -151,7 +151,7 @@ function PlateRecognition() {
         <h3 className="text-lg mb-4">
           {imagePath ? "Plate Number Image" : "Image Container"}
         </h3>
-        <div className="h-[30vh] border border-dashed w-full mb-4">
+        <div className="h-[20vh] border border-dashed w-full mb-4">
           {imagePath && (
             <img
               src={imagePath}
@@ -218,36 +218,40 @@ function PlateRecognition() {
 
           <div className="h-[1px] mb-2 w-full bg-gray-300"></div>
 
-          {imagePath ? (
-            <button
-              onClick={handleClick}
-              className={`bg-[#0000f1] text-white outline-double md:p-3 p-2 font-semibold w-[95%] md:w-[60%] mx-auto ${
-                loading && "opacity-60 cursor-wait"
-              } rounded disabled:opacity-50`}
-              disabled={loading}
-            >
-              {loading ? "Extracting..." : "Extract text"}
-            </button>
-          ) : (
-            <button
-              className="outline-double p-2 md:p-3 w-[95%] md:w-[60%] mx-auto font-semibold rounded disabled:opacity-50"
-              disabled
-            >
-              No Image Selected
-            </button>
-          )}
+          <div className="flex items-center w-full justify-between px-2">
+            {imagePath ? (
+              <button
+                onClick={handleClick}
+                className={`bg-[#0000f1] text-white outline-double md:p-3 p-2 font-semibold ${
+                  loading && "opacity-60 cursor-wait"
+                } rounded disabled:opacity-50`}
+                disabled={loading}
+              >
+                {loading ? "Extracting..." : "Extract text"}
+              </button>
+            ) : (
+              <button
+                className={`bg-slate-200 p-2 md:p-3 ${
+                  !text && "bg-slate-200 w-[95%] md:w-[60%] mx-auto"
+                } font-semibold rounded disabled:opacity-50`}
+                disabled
+              >
+                No Image Selected
+              </button>
+            )}
 
-          {text && (
-            <button
-              onClick={handleSave}
-              className={`bg-green-500 text-white outline-double md:p-3 p-2 font-semibold w-[95%] md:w-[60%] mx-auto mt-4 ${
-                saving && "opacity-60 cursor-wait"
-              } rounded disabled:opacity-50`}
-              disabled={saving}
-            >
-              {saving ? "Saving..." : "Save to database"}
-            </button>
-          )}
+            {text && (
+              <button
+                onClick={handleSave}
+                className={`bg-green-500 text-white outline-double md:p-3 p-2 font-semibold ${
+                  saving && "opacity-60 cursor-wait"
+                } rounded disabled:opacity-50`}
+                disabled={saving}
+              >
+                {saving ? "Saving..." : "Save to database"}
+              </button>
+            )}
+          </div>
         </div>
       </main>
     </div>
