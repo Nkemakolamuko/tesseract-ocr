@@ -16,10 +16,10 @@ const Register = () => {
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
-  const pwdRef = useRef();
+  const emailRef = useRef();
 
   useEffect(() => {
-    pwdRef.current.focus();
+    emailRef.current.focus();
   }, []);
 
   const handleRegister = async (e) => {
@@ -100,6 +100,7 @@ const Register = () => {
             <input
               type="email"
               id="email"
+              ref={emailRef}
               placeholder="churchmail@gmail.com"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
@@ -135,7 +136,6 @@ const Register = () => {
               <input
                 type={showPwd ? "text" : "password"}
                 id="password"
-                ref={pwdRef}
                 placeholder="Password"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
