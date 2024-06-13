@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { FaTrash } from "react-icons/fa";
-import { FaCheckDouble } from "react-icons/fa6";
+import { FaAngleRight, FaCheckDouble } from "react-icons/fa6";
 import { db } from "../firebase";
 import {
   collection,
@@ -12,12 +12,14 @@ import {
 } from "firebase/firestore";
 import { useAuth } from "../UserContext";
 import toast from "react-hot-toast";
+import { useNavigate } from "react-router-dom";
 
 const AllVehicles = () => {
   const { currentUser } = useAuth();
   const [vehicles, setVehicles] = useState([]);
   const [loading, setLoading] = useState(true);
   const [loadingIds, setLoadingIds] = useState([]);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchVehicles = async () => {
@@ -77,24 +79,36 @@ const AllVehicles = () => {
         </div>
       ) : (
         <div className="flex flex-col w-full md:w-[60%] shadow-md rounded divide-y">
-          <p className="px-4 py-2 text-center flex items-center justify-center gap-2">
+          <p className="px-2 py-2 text-center flex items-center gap-2">
             List of today's entries:{" "}
             <span className="text-[#0000f1] font-semibold">
               {vehicles.length}
             </span>{" "}
           </p>
 
+          <p className="text-sm px-2 py-2">Click on Car ID for quick actions</p>
+
           <div className="grid grid-cols-1">
-            <p className="grid grid-cols-4 items-center text-center w-full bg-blue-50 px-4 divide-x font-medium">
+            <p className="grid grid-cols-3 items-center text-center w-full bg-blue-50 px-4 divide-x font-medium">
+              <span className="py-2">Car ID</span>
               <span className="py-2">Entry at</span>
               <span className="py-2">Exit at</span>
-              <span className="py-2 col-span-2">Actions</span>
             </p>
             {vehicles.map((vehicle) => (
               <p
                 key={vehicle.id}
-                className="grid grid-cols-4 items-center text-center w-full px-4 divide-x border-b text-sm"
+                className="grid grid-cols-3 items-center text-center w-full px-4 divide-x border-b text-sm"
               >
+                <span className="flex col-span-1 justify-center">
+                  <span
+                    className={`text-nowrap rounded-md m-1 py-2 px-2 cursor-pointer flex items-center gap-2`}
+                    onClick={() => {
+                      navigate(`/plate-number/${vehicle.id}`);
+                    }}
+                  >
+                    {vehicle.phoneNumber} <FaAngleRight />
+                  </span>
+                </span>
                 <span className="py-2">
                   {new Date(
                     vehicle.createdAt.seconds * 1000
@@ -106,27 +120,6 @@ const AllVehicles = () => {
                         vehicle.exitedAt.seconds * 1000
                       ).toLocaleTimeString()
                     : "-"}
-                </span>
-                <span className="flex col-span-2 justify-center">
-                  <span
-                    className={`${
-                      vehicle.exitedAt
-                        ? "bg-green-500 text-white shadow-md"
-                        : "bg-rose-400 text-white shadow-md"
-                    } text-nowrap rounded-md m-1 py-2 px-2 cursor-pointer flex items-center`}
-                    onClick={() =>
-                      handleCheckExit(vehicle.id, !!vehicle.exitedAt)
-                    }
-                  >
-                    {loadingIds.includes(vehicle.id) ? (
-                      <div className="loader small-loader"></div>
-                    ) : vehicle.exitedAt ? (
-                      "Uncheck as exited"
-                    ) : (
-                      "Check as exited"
-                    )}
-                    {/* <FaCheckDouble /> */}
-                  </span>
                 </span>
               </p>
             ))}

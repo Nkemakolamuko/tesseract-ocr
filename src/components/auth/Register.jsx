@@ -24,7 +24,7 @@ const Register = () => {
       return;
     }
 
-    if (!email.trim() || !password.trim()) {
+    if (!email.trim() || !password.trim() || !churchName.trim()) {
       setError("Fields must not be empty!");
       toast.error("fields must not be empty!");
       return;
@@ -97,7 +97,7 @@ const Register = () => {
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               className="w-full border border-gray-300 px-3 py-2 rounded-lg shadow-sm focus:outline-none focus:ring focus:border-blue-300 text-sm md:text-base"
-              required
+              // required
             />
           </div>
           <div>
@@ -114,7 +114,7 @@ const Register = () => {
               value={churchName}
               onChange={(e) => setChurchName(e.target.value)}
               className="w-full border border-gray-300 px-3 py-2 rounded-lg shadow-sm focus:outline-none focus:ring focus:border-blue-300 text-sm md:text-base"
-              required
+              // required
             />
           </div>
           <div>
@@ -132,7 +132,7 @@ const Register = () => {
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 className="bg-none outline-none w-full"
-                required
+                // required
               />
               <span
                 className="absolute inset-y-0 right-0 pr-3 flex items-center cursor-pointer"

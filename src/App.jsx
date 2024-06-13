@@ -11,6 +11,7 @@ import { Toaster } from "react-hot-toast";
 import AllVehicles from "./components/AllVehicles";
 import History from "./components/History";
 import PlateNumberDetails from "./components/PlateNumberDetails";
+import ForgotPasswordPage from "./components/auth/ForgotPasswordPage";
 
 function App() {
   const location = useLocation();
@@ -18,12 +19,15 @@ function App() {
   // Regular expression to match dynamic paths like /plate-number/:id
   const hideHeaderRegex = /^\/plate-number\/[^/]+$/;
 
+  const hideForPwdReset = /^\/forgot-password\/[^/]+$/;
+
   // Define the paths where the Header should be hidden
   const hideHeaderPaths = ["/login", "/register"];
   // Check if the current path matches any of the hideHeaderPaths or the regex
   const shouldHideHeader =
     hideHeaderPaths.includes(location.pathname) ||
-    hideHeaderRegex.test(location.pathname);
+    hideHeaderRegex.test(location.pathname) ||
+    hideForPwdReset.test(location.pathname);
 
   return (
     <div className="App">
@@ -32,6 +36,10 @@ function App() {
       <Routes>
         <Route path="/register" element={<Register />} />
         <Route path="/login" element={<Login />} />
+        <Route
+          path="/forgot-password/:email"
+          element={<ForgotPasswordPage />}
+        />
         <Route
           path="/"
           element={

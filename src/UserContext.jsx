@@ -18,6 +18,7 @@ export const AuthProvider = ({ children }) => {
   const [currentUser, setCurrentUser] = useState(null);
   const [userData, setUserData] = useState(null);
   const [plateNumbers, setPlateNumbers] = useState([]);
+  const [exitCount, setExitCount] = useState(0);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -42,9 +43,15 @@ export const AuthProvider = ({ children }) => {
           ...doc.data(),
         }));
         setPlateNumbers(plateNumbersData);
+        // Update exit count
+        const exitedCount = plateNumbersData.filter(
+          (plate) => plate.exitedAt
+        ).length;
+        setExitCount(exitedCount);
       } else {
         setUserData(null);
         setPlateNumbers([]);
+        setExitCount(0);
       }
       setLoading(false);
     });
@@ -64,6 +71,12 @@ export const AuthProvider = ({ children }) => {
         ...doc.data(),
       }));
       setPlateNumbers(plateNumbersData);
+
+      // Update exit count
+      const exitedCount = plateNumbersData.filter(
+        (plate) => plate.exitedAt
+      ).length;
+      setExitCount(exitedCount);
     }
   };
 
@@ -75,6 +88,7 @@ export const AuthProvider = ({ children }) => {
         plateNumbers,
         loading,
         refreshPlateNumbers,
+        exitCount,
       }}
     >
       {children}

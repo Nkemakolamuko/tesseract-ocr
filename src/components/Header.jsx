@@ -83,7 +83,7 @@ const Header = () => {
           />
 
           <p
-            className="flex items-center gap-2 bg-slate-200 p-2 rounded-md col-span-1 cursor-pointer"
+            className="flex items-center gap-2 bg-slate-200 py-1 px-4 md:py-2 rounded-md col-span-1 cursor-pointer"
             onClick={() => setSearch(true)}
           >
             <FaSearch />
@@ -112,8 +112,8 @@ const Header = () => {
       <Nav isOpen={isOpen} toggleNav={toggleNav} />
 
       {!search && (
-        <div className="grid grid-cols-6 items-center">
-          <div className="flex items-center text-slate-600 gap-2 text-nowrap col-span-5">
+        <div className="grid grid-cols-5 items-center gap-2">
+          <div className="flex items-center text-slate-600 gap-2 text-nowrap col-span-4">
             <p className="text-sm">{formatDate(currentTime)}</p>
             <p className="text-sm">{formatTime(currentTime)}</p>
           </div>

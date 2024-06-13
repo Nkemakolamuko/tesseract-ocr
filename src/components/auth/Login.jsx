@@ -58,7 +58,7 @@ const Login = () => {
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               className="w-full border border-gray-300 px-3 py-2 rounded-lg shadow-sm focus:outline-none focus:ring focus:border-blue-300"
-              required
+              // required
             />
           </div>
           <div>
@@ -76,7 +76,7 @@ const Login = () => {
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 className="bg-none outline-none w-full"
-                required
+                // required
               />
               <span
                 className="absolute inset-y-0 right-0 pr-3 flex items-center cursor-pointer"
@@ -86,9 +86,12 @@ const Login = () => {
               </span>
             </div>
 
-            <p className="font-medium text-sm my-2 underline underline-offset-2 text-blue-500 hover:text-blue-600 cursor-pointer">
+            <Link
+              to={`/forgot-password/${email || "enter-registered-email"}`}
+              className="font-medium text-sm my-2 underline underline-offset-2 text-blue-500 hover:text-blue-600 cursor-pointer"
+            >
               Forgot password ?
-            </p>
+            </Link>
           </div>
           <button
             type="submit"
