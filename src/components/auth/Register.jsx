@@ -24,25 +24,31 @@ const Register = () => {
       return;
     }
 
+    if (!email.trim() || !password.trim()) {
+      setError("Fields must not be empty!");
+      toast.error("fields must not be empty!");
+      return;
+    }
+
     const passwordValidate = (pwd) => {
       let re = {
         capital: /[A-Z]/,
         digit: /[0-9]/,
         small: /aeiou/,
-        full: /^[@#][A-Za-z0-9]{7,13}$/,
+        full: /^[@#][A-Za-z0-9]{7,15}$/,
       };
 
       return (
         re.capital.test(pwd) &&
         re.digit.test(pwd) &&
-        re.small.test(pwd) &&
+        !re.small.test(pwd) &&
         re.full.test(pwd)
       );
     };
 
     if (!passwordValidate(password)) {
       setError(
-        "Password must include at least: \n - 1 Capital letter \n - 1 small letter \n - 1 special character (@ or #) \n - It should be alphanumeric \n - length must be between 7 and 13"
+        "Password must include at least: \n - 1 Capital letter \n - 1 small letter \n - 1 special character (@ or #) \n - It should be alphanumeric \n - length must be between 8 and 15"
       );
       return;
     }

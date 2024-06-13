@@ -23,6 +23,12 @@ const Login = () => {
       return;
     }
 
+    if (!email.trim() || !password.trim()) {
+      setError("Fields must not be empty!");
+      toast.error("fields must not be empty!");
+      return;
+    }
+
     setLoading(true);
     setError("");
     try {
@@ -79,6 +85,10 @@ const Login = () => {
                 {showPwd ? <FaEyeSlash /> : <FaEye />}
               </span>
             </div>
+
+            <p className="font-medium text-sm my-2 underline underline-offset-2 text-blue-500 hover:text-blue-600 cursor-pointer">
+              Forgot password ?
+            </p>
           </div>
           <button
             type="submit"
