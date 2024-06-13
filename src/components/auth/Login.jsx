@@ -5,6 +5,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { FiLoader } from "react-icons/fi";
 import { FaEyeSlash } from "react-icons/fa";
 import { FaEye } from "react-icons/fa6";
+import toast from "react-hot-toast";
 
 const Login = () => {
   const [email, setEmail] = useState("");

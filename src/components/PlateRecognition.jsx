@@ -125,6 +125,7 @@ function PlateRecognition() {
         createdAt: serverTimestamp(),
       });
       toast.success("Saved to database!", { duration: 2000 });
+      setText("");
     } catch (error) {
       console.error("Error saving to database: ", error);
       toast.error("Error saving to database.");

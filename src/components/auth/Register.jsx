@@ -1,10 +1,11 @@
-import React, { useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { createUserWithEmailAndPassword } from "firebase/auth";
 import { auth, db } from "../../firebase";
 import { Link, useNavigate } from "react-router-dom";
 import { FiLoader } from "react-icons/fi";
 import { FaEye, FaEyeSlash } from "react-icons/fa6";
 import { doc, setDoc } from "firebase/firestore";
+import toast from "react-hot-toast";
 
 const Register = () => {
   const [email, setEmail] = useState("");
@@ -14,6 +15,12 @@ const Register = () => {
   const [showPwd, setShowPwd] = useState(false);
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
+
+  const pwdRef = useRef();
+
+  useEffect(() => {
+    pwdRef.current.focus();
+  }, []);
 
   const handleRegister = async (e) => {
     e.preventDefault();
@@ -128,6 +135,7 @@ const Register = () => {
               <input
                 type={showPwd ? "text" : "password"}
                 id="password"
+                ref={pwdRef}
                 placeholder="Password"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}

@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from "react";
+import React, { useState, useEffect, useCallback, useRef } from "react";
 import { GiHamburgerMenu } from "react-icons/gi";
 import Nav from "./Nav";
 import { useAuth } from "../UserContext";
@@ -15,6 +15,8 @@ const Header = () => {
   const [search, setSearch] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
   const [searchResults, setSearchResults] = useState([]);
+
+  const inputRef = useRef();
 
   const toggleNav = () => {
     setIsOpen(!isOpen);
@@ -73,6 +75,10 @@ const Header = () => {
     debouncedSearch(searchTerm);
   }, [searchTerm, debouncedSearch]);
 
+  useEffect(() => {
+    inputRef.current.focus();
+  }, [search]);
+
   return (
     <div className="h-[50px] md:h-[50px] px-2 shadow-md w-full flex justify-between items-center gap-2 sticky top-0 z-[999] bg-white">
       {!search && (
@@ -95,6 +101,7 @@ const Header = () => {
         <div className="flex items-center border rounded-md w-full justify-between text-sm">
           <input
             type="text"
+            ref={inputRef}
             className="py-2 px-2 outline-none w-[90%]"
             placeholder="Eg: KUJ-345UK"
             value={searchTerm}
