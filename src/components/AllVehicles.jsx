@@ -17,6 +17,7 @@ const AllVehicles = () => {
   const { currentUser } = useAuth();
   const [vehicles, setVehicles] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [loadingIds, setLoadingIds] = useState([]);
 
   useEffect(() => {
     const fetchVehicles = async () => {
@@ -45,6 +46,7 @@ const AllVehicles = () => {
   }, [currentUser]);
 
   const handleCheckExit = async (id, isExited) => {
+    setLoadingIds((prev) => [...prev, id]);
     try {
       const vehicleRef = doc(db, "phoneNumbers", id);
       await updateDoc(vehicleRef, {
@@ -61,6 +63,8 @@ const AllVehicles = () => {
     } catch (error) {
       console.error("Error updating vehicle status: ", error);
       toast.error("Error updating vehicle status.");
+    } finally {
+      setLoadingIds((prev) => prev.filter((loadingId) => loadingId !== id));
     }
   };
 
@@ -106,13 +110,21 @@ const AllVehicles = () => {
                 <span className="flex col-span-2 justify-center">
                   <span
                     className={`${
-                      vehicle.exitedAt ? "bg-green-50" : "bg-rose-50"
-                    } text-nowrap rounded-md m-1 py-2 px-2 cursor-pointer`}
+                      vehicle.exitedAt
+                        ? "bg-green-500 text-white shadow-md"
+                        : "bg-rose-400 text-white shadow-md"
+                    } text-nowrap rounded-md m-1 py-2 px-2 cursor-pointer flex items-center`}
                     onClick={() =>
                       handleCheckExit(vehicle.id, !!vehicle.exitedAt)
                     }
                   >
-                    {vehicle.exitedAt ? "Uncheck as exited" : "Check as exited"}
+                    {loadingIds.includes(vehicle.id) ? (
+                      <div className="loader small-loader"></div>
+                    ) : vehicle.exitedAt ? (
+                      "Uncheck as exited"
+                    ) : (
+                      "Check as exited"
+                    )}
                     {/* <FaCheckDouble /> */}
                   </span>
                 </span>

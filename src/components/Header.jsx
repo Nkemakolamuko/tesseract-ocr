@@ -6,6 +6,7 @@ import { auth, db } from "../firebase";
 import { FaSearch, FaTimes } from "react-icons/fa";
 import { collection, query, where, getDocs } from "firebase/firestore";
 import debounce from "lodash.debounce";
+import { Link } from "react-router-dom";
 
 const Header = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -64,7 +65,7 @@ const Header = () => {
   };
 
   const debouncedSearch = useCallback(
-    debounce((term) => performSearch(term), 300),
+    debounce((term) => performSearch(term), 500),
     []
   );
 
@@ -73,21 +74,22 @@ const Header = () => {
   }, [searchTerm, debouncedSearch]);
 
   return (
-    <div className="h-[50px] md:h-[50px] px-2 shadow-md w-full flex items-center justify-between sticky top-0 z-[999] bg-white">
+    <div className="h-[50px] md:h-[50px] px-2 shadow-md w-full flex justify-between items-center gap-2 sticky top-0 z-[999] bg-white">
       {!search && (
-        <GiHamburgerMenu
-          className="w-6 h-6 cursor-pointer"
-          onClick={toggleNav}
-        />
-      )}
-      {!search && (
-        <p
-          className="flex items-center gap-2 bg-slate-200 text-sm p-2 rounded-md cursor-pointer"
-          onClick={() => setSearch(true)}
-        >
-          <FaSearch />
-          <span>Search</span>
-        </p>
+        <div className="flex items-center gap-2">
+          <GiHamburgerMenu
+            className="w-6 h-6 cursor-pointer col-span-1"
+            onClick={toggleNav}
+          />
+
+          <p
+            className="flex items-center gap-2 bg-slate-200 p-2 rounded-md col-span-1 cursor-pointer"
+            onClick={() => setSearch(true)}
+          >
+            <FaSearch />
+            <span className="text-sm">Search</span>
+          </p>
+        </div>
       )}
       {search && (
         <div className="flex items-center border rounded-md w-full justify-between text-sm">
@@ -110,21 +112,21 @@ const Header = () => {
       <Nav isOpen={isOpen} toggleNav={toggleNav} />
 
       {!search && (
-        <div className="flex items-center justify-between gap-4">
-          <div className="flex items-center text-slate-600 gap-2">
+        <div className="grid grid-cols-6 items-center">
+          <div className="flex items-center text-slate-600 gap-2 text-nowrap col-span-5">
             <p className="text-sm">{formatDate(currentTime)}</p>
             <p className="text-sm">{formatTime(currentTime)}</p>
           </div>
 
-          <div className="flex items-center gap-2">
-            <div className="rounded-full border-2 overflow-hidden w-fit">
-              <img
-                src="https://images.pexels.com/photos/3025593/pexels-photo-3025593.jpeg?auto=compress&cs=tinysrgb&w=600"
-                alt="Church image"
-                className="w-[30px] h-[30px]"
-              />
-            </div>
+          {/* <div className="flex items-center gap-2"> */}
+          <div className="rounded-full border-2 overflow-hidden w-fit col-span-1">
+            <img
+              src="https://images.pexels.com/photos/3025593/pexels-photo-3025593.jpeg?auto=compress&cs=tinysrgb&w=600"
+              alt="Church image"
+              className="w-[30px] h-[30px]"
+            />
           </div>
+          {/* </div> */}
         </div>
       )}
 
@@ -132,9 +134,11 @@ const Header = () => {
         <div className="absolute top-[50px] left-0 w-full bg-white shadow-md border">
           <ul>
             {searchResults.map((result) => (
-              <li key={result.id} className="p-2 border-b">
-                {result.phoneNumber}
-              </li>
+              <Link to={`/plate-number/${result.id}`} key={result.id}>
+                <li key={result.id} className="p-2 border-b">
+                  {result.phoneNumber}
+                </li>
+              </Link>
             ))}
           </ul>
         </div>
