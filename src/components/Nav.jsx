@@ -39,14 +39,14 @@ const Nav = ({ isOpen, toggleNav }) => {
 
   const navLinks = [
     { name: "Home", path: "/" },
-    { name: "All Vehicles", path: "/all-vehicles" },
+    { name: "All Vehicle", path: "/all-vehicles" },
     { name: "History", path: "/history" },
     { name: "Settings", path: "/settings" },
   ];
 
   return (
     <motion.div
-      className={`fixed top-0 left-0 h-full w-full bg-black/30`}
+      className={`fixed top-0 left-0 h-full w-full bg-black/30 md:bg-transparent`}
       initial={false}
       animate={isOpen ? "open" : "closed"}
       variants={navVariants}

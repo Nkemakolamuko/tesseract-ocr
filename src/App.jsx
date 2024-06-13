@@ -8,6 +8,8 @@ import ProtectedRoute from "./components/ProtectedRoute";
 import Login from "./components/auth/Login";
 import Register from "./components/auth/Register";
 import { Toaster } from "react-hot-toast";
+import AllVehicles from "./components/AllVehicles";
+import History from "./components/History";
 
 function App() {
   const location = useLocation();
@@ -35,6 +37,22 @@ function App() {
           element={
             <ProtectedRoute>
               <PlateRecognition />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/all-vehicles"
+          element={
+            <ProtectedRoute>
+              <AllVehicles />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/history"
+          element={
+            <ProtectedRoute>
+              <History />
             </ProtectedRoute>
           }
         />
