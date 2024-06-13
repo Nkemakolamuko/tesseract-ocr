@@ -57,7 +57,6 @@ const Nav = ({ isOpen, toggleNav }) => {
         animate={isOpen ? "open" : "closed"}
         variants={navVariants}
       >
-        <Toaster />
         <div
           className="absolute top-4 left-4 z-50 cursor-pointer text-2xl text-slate-200"
           onClick={toggleNav}
