@@ -17,6 +17,36 @@ const Register = () => {
 
   const handleRegister = async (e) => {
     e.preventDefault();
+
+    const emailRegex = /^[a-zA-Z0-9]+@[a-zA-Z0-9]+\.[A-Za-z]+$/;
+    if (!emailRegex.test(email)) {
+      setError("Invalid email address.");
+      return;
+    }
+
+    const passwordValidate = (pwd) => {
+      let re = {
+        capital: /[A-Z]/,
+        digit: /[0-9]/,
+        small: /aeiou/,
+        full: /^[@#][A-Za-z0-9]{7,13}$/,
+      };
+
+      return (
+        re.capital.test(pwd) &&
+        re.digit.test(pwd) &&
+        re.small.test(pwd) &&
+        re.full.test(pwd)
+      );
+    };
+
+    if (!passwordValidate(password)) {
+      setError(
+        "Password must include at least: \n - 1 Capital letter \n - 1 small letter \n - 1 special character (@ or #) \n - It should be alphanumeric \n - length must be between 7 and 13"
+      );
+      return;
+    }
+
     setLoading(true);
     setError("");
     try {
