@@ -75,7 +75,7 @@ const PlateNumberDetails = () => {
     <div className="w-full bg-white py-6 px-2 h-screen">
       {vehicle ? (
         <div className="flex flex-col w-full md:w-[60%] shadow-md rounded divide-y">
-          <div className="flex items-center justify-between mb-2">
+          <div className="flex items-center justify-between mt-8 mb-2 p-2">
             <h2 className="mb-2 font-medium">Vehicle Details</h2>
             <p
               className="p-2 bg-blue-50 rounded-md cursor-pointer"

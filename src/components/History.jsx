@@ -57,7 +57,7 @@ const History = () => {
                     ).toLocaleString()}
                   </td>
                   <td className="py-2 px-4 border-b">
-                    {entry.exitTime
+                    {entry.exitedAt
                       ? new Date(entry.exitedAt.seconds * 1000).toLocaleString()
                       : "N/A"}
                   </td>
