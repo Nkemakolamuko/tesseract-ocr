@@ -10,7 +10,10 @@ import {
   query,
   where,
   getDocs,
+  setDoc,
+  doc,
   serverTimestamp,
+  Timestamp,
 } from "firebase/firestore";
 import { useAuth } from "../UserContext";
 
@@ -118,12 +121,22 @@ function PlateRecognition() {
         return;
       }
 
-      // Save to Firestore if no duplicate found
-      await addDoc(collection(db, "phoneNumbers"), {
-        phoneNumber: text,
+      const entry = {
         userId: currentUser.uid,
-        createdAt: serverTimestamp(),
-      });
+        phoneNumber: text,
+        createdAt: Timestamp.now(),
+      };
+
+      // Add to phoneNumbers collection
+      const phoneNumberDocRef = await addDoc(
+        collection(db, "phoneNumbers"),
+        entry
+      );
+      const phoneNumberDocId = phoneNumberDocRef.id;
+
+      // Add to history collection using the same ID
+      await setDoc(doc(db, "history", phoneNumberDocId), entry);
+
       toast.success("Saved to database!", { duration: 2000 });
       setText("");
     } catch (error) {

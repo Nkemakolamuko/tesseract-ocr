@@ -37,14 +37,23 @@ const PlateNumberDetails = () => {
   const handleCheckExit = async (isExited) => {
     setLoadingIds((prev) => [...prev, id]);
     try {
+      const exitTime = isExited ? null : new Date();
       const vehicleRef = doc(db, "phoneNumbers", id);
+      const historyRef = doc(db, "history", id);
+
       await updateDoc(vehicleRef, {
-        exitedAt: isExited ? null : new Date(),
+        exitedAt: exitTime,
       });
+
+      await updateDoc(historyRef, {
+        exitedAt: exitTime,
+      });
+
       setVehicle((prev) => ({
         ...prev,
-        exitedAt: isExited ? null : new Date(),
+        exitedAt: exitTime,
       }));
+
       toast.success(`Vehicle marked as ${isExited ? "not exited" : "exited"}.`);
     } catch (error) {
       console.error("Error updating vehicle status: ", error);

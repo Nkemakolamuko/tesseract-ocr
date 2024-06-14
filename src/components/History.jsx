@@ -42,21 +42,23 @@ const History = () => {
           <table className="min-w-full bg-white">
             <thead>
               <tr className="bg-gray-200">
-                <th className="py-2 px-4 border-b">Plate Number</th>
-                <th className="py-2 px-4 border-b">Entry Time</th>
-                <th className="py-2 px-4 border-b">Exit Time</th>
+                <th className="py-2 px-4 border-b text-start">Plate Number</th>
+                <th className="py-2 px-4 border-b text-start">Entry Time</th>
+                <th className="py-2 px-4 border-b text-start">Exit Time</th>
               </tr>
             </thead>
             <tbody>
               {historyData.map((entry) => (
                 <tr key={entry.id}>
-                  <td className="py-2 px-4 border-b">{entry.plateNumber}</td>
+                  <td className="py-2 px-4 border-b">{entry.phoneNumber}</td>
                   <td className="py-2 px-4 border-b">
-                    {new Date(entry.entryTime.seconds * 1000).toLocaleString()}
+                    {new Date(
+                      entry?.createdAt?.seconds * 1000
+                    ).toLocaleString()}
                   </td>
                   <td className="py-2 px-4 border-b">
                     {entry.exitTime
-                      ? new Date(entry.exitTime.seconds * 1000).toLocaleString()
+                      ? new Date(entry.exitedAt.seconds * 1000).toLocaleString()
                       : "N/A"}
                   </td>
                 </tr>
