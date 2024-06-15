@@ -74,7 +74,7 @@ const AllVehicles = () => {
     <div className="w-full bg-white py-6 px-2 h-screen">
       <h2 className="mb-2 font-medium">All Vehicles</h2>
       {loading ? (
-        <div className="w-full flex justify-center items-center">
+        <div className="w-full flex justify-center items-center h-screen">
           <div className="loader"></div>
         </div>
       ) : (
@@ -86,7 +86,9 @@ const AllVehicles = () => {
             </span>{" "}
           </p>
 
-          <p className="text-sm px-2 py-2">Click on Car ID for quick actions</p>
+          <p className="text-sm px-2 py-2">
+            Click on any Car ID for quick actions
+          </p>
 
           <div className="grid grid-cols-1">
             <p className="grid grid-cols-3 items-center text-center w-full bg-blue-50 px-4 divide-x font-medium">

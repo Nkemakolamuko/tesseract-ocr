@@ -31,3 +31,38 @@
     transform: rotate(360deg);
   }
 }
+
+/* Custom styles for toggle switch */
+.toggle-checkbox {
+  appearance: none;
+  width: 40px;
+  height: 20px;
+  background-color: #e2e8f0;
+  border-radius: 9999px;
+  position: relative;
+  outline: none;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.toggle-checkbox:checked {
+  background-color: #60a5fa;
+}
+
+.toggle-checkbox::before {
+  content: "";
+  position: absolute;
+  top: 2px;
+  left: 2px;
+  width: 16px;
+  height: 16px;
+  background-color: white;
+  border-radius: 9999px;
+  transition: transform 0.3s;
+}
+
+.toggle-checkbox:checked::before {
+  transform: translateX(20px);
+}
+
+/* Custom styles for toggle switch end */

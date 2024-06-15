@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { db } from "../firebase";
 import { doc, getDoc, updateDoc } from "firebase/firestore";
-import { FaCheckDouble } from "react-icons/fa6";
+import { FaArrowLeft, FaCheckDouble } from "react-icons/fa6";
 import toast from "react-hot-toast";
 
 const PlateNumberDetails = () => {
@@ -76,13 +76,13 @@ const PlateNumberDetails = () => {
       {vehicle ? (
         <div className="flex flex-col w-full md:w-[60%] shadow-md rounded divide-y mt-12">
           <div className="flex items-center justify-between mb-2 p-2">
-            <h2 className="mb-2 font-medium">Vehicle Details</h2>
             <p
               className="p-2 bg-blue-50 rounded-md cursor-pointer"
               onClick={() => navigate(-1)}
             >
-              Go back
+              <FaArrowLeft />
             </p>
+            <h2 className="font-medium">Vehicle Details</h2>
           </div>
           <div className="grid grid-cols-1">
             <p className="grid grid-cols-4 items-center text-center w-full bg-blue-50 px-4 divide-x font-medium">

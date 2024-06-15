@@ -12,6 +12,7 @@ import AllVehicles from "./components/AllVehicles";
 import History from "./components/History";
 import PlateNumberDetails from "./components/PlateNumberDetails";
 import ForgotPasswordPage from "./components/auth/ForgotPasswordPage";
+import Settings from "./components/Settings";
 
 function App() {
   const location = useLocation();
@@ -70,6 +71,14 @@ function App() {
           element={
             <ProtectedRoute>
               <History />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/settings"
+          element={
+            <ProtectedRoute>
+              <Settings />
             </ProtectedRoute>
           }
         />

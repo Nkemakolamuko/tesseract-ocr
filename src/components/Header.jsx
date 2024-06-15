@@ -113,19 +113,19 @@ const Header = () => {
 
       {!search && (
         <div className="grid grid-cols-5 items-center gap-2">
-          <div className="flex items-center text-slate-600 gap-2 text-nowrap col-span-4">
+          <div className="flex items-center text-slate-600 gap-2 text-nowrap col-span-5">
             <p className="text-sm">{formatDate(currentTime)}</p>
             <p className="text-sm">{formatTime(currentTime)}</p>
           </div>
 
           {/* <div className="flex items-center gap-2"> */}
-          <div className="rounded-full border-2 overflow-hidden w-fit col-span-1">
+          {/* <div className="rounded-full border-2 overflow-hidden w-fit col-span-1">
             <img
               src="https://images.pexels.com/photos/3025593/pexels-photo-3025593.jpeg?auto=compress&cs=tinysrgb&w=600"
               alt="Church image"
               className="w-[30px] h-[30px]"
             />
-          </div>
+          </div> */}
           {/* </div> */}
         </div>
       )}
