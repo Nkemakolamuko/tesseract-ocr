@@ -35,7 +35,7 @@ const Settings = () => {
 
   return (
     <>
-      {userData.churchName ? (
+      {userData ? (
         <div className="container mx-auto p-4">
           <div className="bg-white rounded-lg">
             {/* Profile Section */}
