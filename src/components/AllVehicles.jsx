@@ -13,6 +13,7 @@ import {
 import { useAuth } from "../UserContext";
 import toast from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
+import { FiLoader } from "react-icons/fi";
 
 const AllVehicles = () => {
   const { currentUser } = useAuth();
