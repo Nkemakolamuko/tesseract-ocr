@@ -74,8 +74,11 @@ const AllVehicles = () => {
     <div className="w-full bg-white py-6 px-2 h-screen">
       <h2 className="mb-2 font-medium">All Vehicles</h2>
       {loading ? (
-        <div className="w-full flex justify-center items-center h-screen">
-          <div className="loader"></div>
+        // <div className="w-full flex justify-center items-center h-screen">
+        //   <div className="loader"></div>
+        // </div>
+        <div className="w-full h-screen flex justify-center items-center">
+          <FiLoader className="w-24 h-24 animate-spin" />
         </div>
       ) : (
         <div className="flex flex-col w-full md:w-[60%] shadow-md rounded divide-y">
