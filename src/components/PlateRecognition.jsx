@@ -127,7 +127,7 @@ function PlateRecognition() {
         createdAt: Timestamp.now(),
       };
 
-      // Add to phoneNumbers collection
+      // Add to phoneNumbers (PlateNumbers actually) collection
       const phoneNumberDocRef = await addDoc(
         collection(db, "phoneNumbers"),
         entry
@@ -149,7 +149,7 @@ function PlateRecognition() {
 
   return (
     <div
-      className={`md:max-w-3xl ${
+      className={`md:max-w-3xl text-sm ${
         !crop && "border-t p-2"
       } w-full mx-auto relative`}
     >
@@ -162,7 +162,7 @@ function PlateRecognition() {
         />
       )}
       <main className="flex flex-col items-center">
-        <h3 className="text-lg mb-4">
+        <h3 className="mb-4">
           {imagePath ? "Plate Number Image" : "Image Container"}
         </h3>
         <div className="h-[20vh] border border-dashed w-full mb-4">
@@ -175,15 +175,13 @@ function PlateRecognition() {
           )}
         </div>
         <div className="flex flex-col border w-full py-2 rounded">
-          <h3 className="text-lg mb-2 text-center">
-            Extracted Car Plate Number
-          </h3>
+          <h3 className="mb-2 text-center">Extracted Car Plate Number</h3>
           <div className="relative mb-4 p-4 border border-gray-300 rounded w-[95%] mx-auto md:w-96">
             <p>{text}</p>
             {text && (
               <button
                 onClick={handleCopy}
-                className="absolute top-0 right-0 mt-2 mr-2 bg-green-500 text-white p-1 rounded shadow-lg active:scale-95 active:shadow-none"
+                className="absolute top-0 right-0 text-xs mt-2 mr-2 bg-green-500 text-white p-1 rounded shadow-lg active:scale-95 active:shadow-none"
               >
                 {copyText ? "Copied" : "Copy"}
               </button>
