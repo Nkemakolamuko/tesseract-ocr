@@ -122,19 +122,19 @@ const Settings = () => {
                 className="rounded-full h-24 w-24 mb-4 border-4"
               />
               {isEditing ? (
-                <div className="flex flex-col items-center">
+                <div className="flex flex-col items-center w-full justify-center">
                   <input
                     type="text"
                     ref={inputRef}
                     value={editedChurchName}
                     onChange={(e) => setEditedChurchName(e.target.value)}
-                    className="border border-gray-300 rounded-lg px-2 py-1 mb-1 outline-none focus:border-blue-300 text-base text-[#0000f1] focus:border-2 transition-all duration-300"
+                    className="border w-fit border-gray-300 rounded-lg px-2 py-1 mb-1 outline-none focus:border-blue-300 text-lg font-semibold text-[#0000f1] focus:border-2 transition-all duration-300"
                   />
                   <input
                     type="email"
                     value={editedEmail}
                     onChange={(e) => setEditedEmail(e.target.value)}
-                    className="border border-gray-300 rounded-lg px-2 py-1 outline-none focus:border-blue-300 text-sm focus:border-2 transition-all duration-300"
+                    className="border w-fit border-gray-300 rounded-lg px-2 py-1 outline-none focus:border-blue-300 text-sm focus:border-2 transition-all duration-300"
                   />
                 </div>
               ) : (
