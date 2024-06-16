@@ -211,13 +211,13 @@ function PlateRecognition() {
             <div className="flex items-center w-fit mx-auto gap-2 mt-2">
               <label
                 htmlFor="file-input"
-                className="mb-4 px-4 py-2 border border-gray-300 w-fit mx-auto rounded-lg cursor-pointer bg-[#292929] text-white font-semibold text-nowrap text-sm md:text-base"
+                className="mb-4 px-4 py-2 border border-gray-300 w-fit mx-auto rounded-lg cursor-pointer shadow text-nowrap text-sm md:text-base"
               >
                 {imagePath ? "Choose/Snap Another Image" : "Choose/Snap Image"}
               </label>
               {imagePath && (
                 <p
-                  className="mb-4 px-4 py-2 border-2 border-gray-300 w-fit mx-auto rounded-lg cursor-pointer font-semibold text-nowrap text-sm md:text-base"
+                  className="mb-4 px-4 py-2 border-2 border-gray-300 w-fit mx-auto rounded-lg cursor-pointer bg-[#292929] text-white text-nowrap text-sm md:text-base"
                   onClick={() => {
                     setCrop(true);
                   }}

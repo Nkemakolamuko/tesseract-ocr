@@ -16,8 +16,8 @@ function ImageCropper({ image, onCropDone, onCropCancel }) {
   };
 
   return (
-    <div className="h-screen w-full bg-black/30 fixed top-0 left-0 flex items-center justify-center z-[999]">
-      <div className="relative w-full max-w-3xl bg-white shadow-lg">
+    <div className="h-screen w-full bg-black/30 fixed top-0 left-0 flex items-center justify-center z-[999] p-2">
+      <div className="relative w-full max-w-3xl bg-white shadow-lg rounded overflow-hidden">
         <div className="relative w-full h-[55vh]">
           <Cropper
             image={image}
@@ -38,7 +38,7 @@ function ImageCropper({ image, onCropDone, onCropCancel }) {
         </div>
 
         <div className="bg-gray-100 w-full flex flex-col items-center space-y-4 py-4">
-          <p className="text-sm">
+          <p className="text-sm px-2">
             Choose Image ratio below or adjust manually above.
           </p>
           <div className="flex flex-wrap justify-center space-x-4 px-4 py-1 bg-slate-300">
