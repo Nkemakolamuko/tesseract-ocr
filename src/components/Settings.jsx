@@ -128,104 +128,30 @@ const Settings = () => {
                     ref={inputRef}
                     value={editedChurchName}
                     onChange={(e) => setEditedChurchName(e.target.value)}
-                    className="border border-gray-300 rounded-lg p-2 mb-2 outline-none focus:border-blue-300 focus:border-2 transition-all duration-300"
+                    className="border border-gray-300 rounded-lg px-2 py-1 mb-1 outline-none focus:border-blue-300 text-base text-[#0000f1] focus:border-2 transition-all duration-300"
                   />
                   <input
                     type="email"
                     value={editedEmail}
                     onChange={(e) => setEditedEmail(e.target.value)}
-                    className="border border-gray-300 rounded-lg p-2 outline-none focus:border-blue-300 focus:border-2 transition-all duration-300"
+                    className="border border-gray-300 rounded-lg px-2 py-1 outline-none focus:border-blue-300 text-sm focus:border-2 transition-all duration-300"
                   />
                 </div>
               ) : (
                 <div className="flex flex-col justify-center text-center">
-                  <h2 className="text-xl font-semibold mb-2 text-[#0000f1]">
+                  <h2 className="text-lg font-semibold mb-2 text-[#0000f1]">
                     {userData?.churchName || "Church Name"}
                   </h2>
-                  <p className="text-gray-600">
+                  <p className="text-gray-600 text-sm">
                     {userData?.email || "user@example.com"}
                   </p>
                 </div>
               )}
             </div>
 
-            {/* Settings Sections */}
-            <div className="mt-6 space-y-6">
-              {/* Account Settings */}
-              <div className="border-t pt-4">
-                <h3 className="font-semibold mb-2">Account Settings</h3>
-                <div className="space-y-2">
-                  <div className="flex justify-between items-center text-sm">
-                    <span>Change Password</span>
-                    <button
-                      className="text-blue-500 hover:underline"
-                      onClick={() => setShowModal(true)}
-                    >
-                      Change
-                    </button>
-                  </div>
-                  <div className="flex justify-between items-center text-sm">
-                    <span>Two-Factor Authentication</span>
-                    <button className="text-blue-500 hover:underline">
-                      Enable
-                    </button>
-                  </div>
-                </div>
-              </div>
-
-              {/* Notifications Settings */}
-              <div className="border-t pt-4">
-                <h3 className="font-semibold mb-2">Notifications</h3>
-                <div className="space-y-2">
-                  <div className="flex justify-between items-center text-sm">
-                    <span>Email Notifications</span>
-                    <input type="checkbox" className="toggle-checkbox" />
-                  </div>
-                  <div className="flex justify-between items-center text-sm">
-                    <span>SMS Notifications</span>
-                    <input type="checkbox" className="toggle-checkbox" />
-                  </div>
-                </div>
-              </div>
-
-              {/* Privacy Settings */}
-              <div className="border-t pt-4">
-                <h3 className="font-semibold mb-2">Privacy</h3>
-                <div className="space-y-2">
-                  <div className="flex justify-between items-center text-sm">
-                    <span>Profile Visibility</span>
-                    <select className="border border-gray-300 rounded-md outline-none">
-                      <option>Public</option>
-                      <option>Private</option>
-                    </select>
-                  </div>
-                  <div className="flex justify-between items-center text-sm">
-                    <span>Search Visibility</span>
-                    <input type="checkbox" className="toggle-checkbox" />
-                  </div>
-                </div>
-              </div>
-
-              {/* Delete Account */}
-              <div className="border-t pt-4">
-                <h3 className="font-semibold mb-2 text-red-500">Danger Zone</h3>
-                <div className="space-y-2">
-                  <div className="flex justify-between items-center text-sm">
-                    <span>Delete Account</span>
-                    <button
-                      className="text-red-500 hover:underline"
-                      onClick={() => setShowDeleteModal(true)}
-                    >
-                      Delete
-                    </button>
-                  </div>
-                </div>
-              </div>
-            </div>
-
             {/* Edit and Save Buttons */}
-            {isEditing ? (
-              <div className="flex justify-end space-x-4 mt-4">
+            {isEditing && (
+              <div className="flex justify-end space-x-4 mt-2 border-t pt-2 text-sm">
                 <button
                   onClick={handleCancel}
                   className="bg-gray-500 text-white py-2 px-4 rounded hover:bg-gray-700"
@@ -241,11 +167,90 @@ const Settings = () => {
                   {loading ? <FiLoader className="animate-spin" /> : "Save"}
                 </button>
               </div>
-            ) : (
+            )}
+
+            {/* Settings Sections */}
+            <div className="mt-6 space-y-6">
+              {/* Account Settings */}
+              <div className="border-t pt-4">
+                <h3 className="font-semibold mb-2 text-sm">Account Settings</h3>
+                <div className="space-y-2">
+                  <div className="flex justify-between items-center text-xs">
+                    <span>Change Password</span>
+                    <button
+                      className="text-blue-500 hover:underline"
+                      onClick={() => setShowModal(true)}
+                    >
+                      Change
+                    </button>
+                  </div>
+                  <div className="flex justify-between items-center text-xs">
+                    <span>Two-Factor Authentication</span>
+                    <button className="text-blue-500 hover:underline">
+                      Enable
+                    </button>
+                  </div>
+                </div>
+              </div>
+
+              {/* Notifications Settings */}
+              <div className="border-t pt-4">
+                <h3 className="font-semibold mb-2 text-sm">Notifications</h3>
+                <div className="space-y-2">
+                  <div className="flex justify-between items-center text-xs">
+                    <span>Email Notifications</span>
+                    <input type="checkbox" className="toggle-checkbox" />
+                  </div>
+                  <div className="flex justify-between items-center text-xs">
+                    <span>SMS Notifications</span>
+                    <input type="checkbox" className="toggle-checkbox" />
+                  </div>
+                </div>
+              </div>
+
+              {/* Privacy Settings */}
+              <div className="border-t pt-4">
+                <h3 className="font-semibold mb-2 text-sm">Privacy</h3>
+                <div className="space-y-2">
+                  <div className="flex justify-between items-center text-xs">
+                    <span>Profile Visibility</span>
+                    <select className="border border-gray-300 rounded-md outline-none">
+                      <option>Public</option>
+                      <option>Private</option>
+                    </select>
+                  </div>
+                  <div className="flex justify-between items-center text-xs">
+                    <span>Search Visibility</span>
+                    <input type="checkbox" className="toggle-checkbox" />
+                  </div>
+                </div>
+              </div>
+
+              {/* Delete Account */}
+              <div className="border-t pt-4">
+                <h3 className="font-semibold mb-2 text-red-500 text-sm">
+                  Danger Zone
+                </h3>
+                <div className="space-y-2">
+                  <div className="flex justify-between items-center text-xs">
+                    <span>Delete Account</span>
+                    <button
+                      className="text-red-500 hover:underline"
+                      onClick={() => setShowDeleteModal(true)}
+                    >
+                      Delete
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* Start editing button */}
+            {!isEditing && (
               <div className="flex justify-end mt-2 border-t">
                 <button
                   onClick={handleEdit}
-                  className="bg-blue-500 text-white mt-2 py-2 px-4 rounded hover:bg-blue-700 text-sm"
+                  className="bg-blue-500 text-white mt-2 py-2 px-4 rounded hover:bg-blue-700 text-xs"
                 >
                   Edit Profile
                 </button>
@@ -280,7 +285,7 @@ const Settings = () => {
             loading={loading}
           >
             <h2 className="text-lg font-semibold mb-4">Delete Account</h2>
-            <p className="text-sm text-gray-600 mb-4">
+            <p className="text-xs text-gray-600 mb-4">
               Are you sure you want to delete your account? This action cannot
               be undone.
             </p>
