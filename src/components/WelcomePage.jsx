@@ -97,7 +97,7 @@ const WelcomePage = () => {
           </div>
         )}
         <p
-          className={`py-2 ${
+          className={`py-2 text-sm ${
             !start
               ? "bg-[#0000f1] border-b-4 px-3 border-[#0f8bff]"
               : "bg-rose-500 border-b-4 px-3 border-rose-300"
@@ -110,19 +110,21 @@ const WelcomePage = () => {
 
       {!start && (
         <div className="p-2">
-          <p className="text-sm md:text-base">Click on any to see all.</p>
+          <p className="text-xs md:text-base">Click on any to see all.</p>
           <CounterTracker />
           <div className="mt-4 border">
-            <h3 className="font-medium p-2 text-sm">
+            <h3 className="font-medium p-2 text-xs">
               Plate Numbers and Entry Times
             </h3>
             <table className="min-w-full bg-white">
               <thead>
                 <tr className="bg-slate-300 divide-x">
-                  <th className="py-2 px-2 border-b text-center">
+                  <th className="py-2 px-2 border-b text-center text-sm">
                     Plate Number
                   </th>
-                  <th className="py-2 px-2 border-b text-center">Entry Time</th>
+                  <th className="py-2 px-2 border-b text-center text-sm">
+                    Entry Time
+                  </th>
                 </tr>
               </thead>
               <tbody>

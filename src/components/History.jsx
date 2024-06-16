@@ -41,7 +41,7 @@ const History = () => {
         <div className="overflow-x-auto">
           <table className="min-w-full bg-white">
             <thead>
-              <tr className="bg-gray-200">
+              <tr className="bg-gray-200 text-sm">
                 <th className="py-2 px-4 border-b text-start">Car ID</th>
                 <th className="py-2 px-4 border-b text-start">Entry Time</th>
                 <th className="py-2 px-4 border-b text-start">Exit Time</th>

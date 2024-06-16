@@ -1,15 +1,31 @@
-import React, { useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { useAuth } from "../UserContext";
 import { updatePassword } from "firebase/auth";
+import { doc, deleteDoc, updateDoc } from "firebase/firestore";
 import Modal from "../components/Modal";
 import toast from "react-hot-toast";
 import { FiLoader } from "react-icons/fi";
+import { db } from "../firebase";
 
 const Settings = () => {
-  const { currentUser, userData } = useAuth();
+  const { currentUser, userData, setUserData } = useAuth(); // assuming setUserData is available in the context to update the user data
   const [showModal, setShowModal] = useState(false);
+  const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [newPassword, setNewPassword] = useState("");
   const [loading, setLoading] = useState(false);
+  const [isEditing, setIsEditing] = useState(false);
+  const [editedChurchName, setEditedChurchName] = useState(
+    userData?.churchName || ""
+  );
+  const [editedEmail, setEditedEmail] = useState(userData?.email || "");
+
+  const inputRef = useRef(null);
+
+  useEffect(() => {
+    if (isEditing) {
+      inputRef.current.focus();
+    }
+  }, [isEditing]);
 
   const handlePasswordChange = async () => {
     if (!newPassword) {
@@ -33,6 +49,63 @@ const Settings = () => {
     }
   };
 
+  const handleEdit = () => {
+    setIsEditing(true);
+  };
+
+  const handleSave = async () => {
+    setLoading(true);
+    try {
+      const userDocRef = doc(db, "Users", currentUser.uid);
+      await updateDoc(userDocRef, {
+        churchName: editedChurchName,
+        email: editedEmail,
+      });
+
+      toast.success("Profile updated successfully!");
+
+      // Update the user data in context/state
+      setUserData((prevData) => ({
+        ...prevData,
+        churchName: editedChurchName,
+        email: editedEmail,
+      }));
+
+      setIsEditing(false);
+    } catch (error) {
+      console.error("Error updating profile: ", error);
+      toast.error("Error updating profile.");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleCancel = () => {
+    setEditedChurchName(userData?.churchName || "");
+    setEditedEmail(userData?.email || "");
+    setIsEditing(false);
+  };
+
+  const handleDeleteAccount = async () => {
+    setLoading(true);
+    try {
+      // Delete the user document from Firestore
+      const userDocRef = doc(db, "Users", currentUser.uid);
+      await deleteDoc(userDocRef);
+
+      // Delete the user account from Firebase Authentication
+      await currentUser.delete();
+
+      toast.success("Account deleted successfully!");
+      setShowDeleteModal(false);
+    } catch (error) {
+      console.error("Error deleting account: ", error);
+      toast.error("Error deleting account.");
+    } finally {
+      setLoading(false);
+    }
+  };
+
   return (
     <>
       {userData ? (
@@ -48,12 +121,32 @@ const Settings = () => {
                 alt="Profile"
                 className="rounded-full h-24 w-24 mb-4 border-4"
               />
-              <h2 className="text-xl font-semibold mb-2 text-[#0000f1]">
-                {userData?.churchName || "User Name"}
-              </h2>
-              <p className="text-gray-600">
-                {userData?.email || "user@example.com"}
-              </p>
+              {isEditing ? (
+                <div className="flex flex-col items-center">
+                  <input
+                    type="text"
+                    ref={inputRef}
+                    value={editedChurchName}
+                    onChange={(e) => setEditedChurchName(e.target.value)}
+                    className="border border-gray-300 rounded-lg p-2 mb-2 outline-none focus:border-blue-300 focus:border-2 transition-all duration-300"
+                  />
+                  <input
+                    type="email"
+                    value={editedEmail}
+                    onChange={(e) => setEditedEmail(e.target.value)}
+                    className="border border-gray-300 rounded-lg p-2 outline-none focus:border-blue-300 focus:border-2 transition-all duration-300"
+                  />
+                </div>
+              ) : (
+                <div className="flex flex-col justify-center text-center">
+                  <h2 className="text-xl font-semibold mb-2 text-[#0000f1]">
+                    {userData?.churchName || "Church Name"}
+                  </h2>
+                  <p className="text-gray-600">
+                    {userData?.email || "user@example.com"}
+                  </p>
+                </div>
+              )}
             </div>
 
             {/* Settings Sections */}
@@ -119,13 +212,45 @@ const Settings = () => {
                 <div className="space-y-2">
                   <div className="flex justify-between items-center text-sm">
                     <span>Delete Account</span>
-                    <button className="text-red-500 hover:underline">
+                    <button
+                      className="text-red-500 hover:underline"
+                      onClick={() => setShowDeleteModal(true)}
+                    >
                       Delete
                     </button>
                   </div>
                 </div>
               </div>
             </div>
+
+            {/* Edit and Save Buttons */}
+            {isEditing ? (
+              <div className="flex justify-end space-x-4 mt-4">
+                <button
+                  onClick={handleCancel}
+                  className="bg-gray-500 text-white py-2 px-4 rounded hover:bg-gray-700"
+                  disabled={loading}
+                >
+                  Cancel
+                </button>
+                <button
+                  onClick={handleSave}
+                  className="bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-700"
+                  disabled={loading}
+                >
+                  {loading ? <FiLoader className="animate-spin" /> : "Save"}
+                </button>
+              </div>
+            ) : (
+              <div className="flex justify-end mt-2 border-t">
+                <button
+                  onClick={handleEdit}
+                  className="bg-blue-500 text-white mt-2 py-2 px-4 rounded hover:bg-blue-700 text-sm"
+                >
+                  Edit Profile
+                </button>
+              </div>
+            )}
           </div>
 
           {/* Modal for changing password */}
@@ -144,6 +269,36 @@ const Settings = () => {
                 onChange={(e) => setNewPassword(e.target.value)}
                 className="border border-gray-300 rounded-lg p-2 outline-none focus:border-blue-300 focus:border-2 transition-all duration-300"
               />
+            </div>
+          </Modal>
+
+          {/* Modal for deleting account */}
+          <Modal
+            show={showDeleteModal}
+            onClose={() => setShowDeleteModal(false)}
+            onSubmit={handleDeleteAccount}
+            loading={loading}
+          >
+            <h2 className="text-lg font-semibold mb-4">Delete Account</h2>
+            <p className="text-sm text-gray-600 mb-4">
+              Are you sure you want to delete your account? This action cannot
+              be undone.
+            </p>
+            <div className="flex justify-end space-x-4">
+              <button
+                onClick={() => setShowDeleteModal(false)}
+                className="bg-gray-500 text-white py-2 px-4 rounded hover:bg-gray-700"
+                disabled={loading}
+              >
+                Cancel
+              </button>
+              <button
+                onClick={handleDeleteAccount}
+                className="bg-red-500 text-white py-2 px-4 rounded hover:bg-red-700"
+                disabled={loading}
+              >
+                {loading ? <FiLoader className="animate-spin" /> : "Delete"}
+              </button>
             </div>
           </Modal>
         </div>

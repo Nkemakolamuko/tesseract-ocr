@@ -1,6 +1,11 @@
 import React, { useState, useEffect } from "react";
 import { FaTrash } from "react-icons/fa";
-import { FaAngleRight, FaCheckDouble } from "react-icons/fa6";
+import {
+  FaAngleRight,
+  FaCheckDouble,
+  FaClock,
+  FaIdCard,
+} from "react-icons/fa6";
 import { db } from "../firebase";
 import {
   collection,
@@ -90,15 +95,21 @@ const AllVehicles = () => {
             </span>{" "}
           </p>
 
-          <p className="text-sm px-2 py-2">
+          <p className="text-xs px-2 py-2">
             Click on any Car ID for quick actions
           </p>
 
           <div className="grid grid-cols-1">
-            <p className="grid grid-cols-3 items-center text-center w-full bg-blue-50 px-4 divide-x font-medium">
-              <span className="py-2">Car ID</span>
-              <span className="py-2">Entry at</span>
-              <span className="py-2">Exit at</span>
+            <p className="grid grid-cols-3 items-center text-center w-full bg-gray-200 px-2 divide-x font-medium">
+              <span className="py-2 text-start text-sm px-2 flex items-center gap-3">
+                Car ID <FaIdCard />{" "}
+              </span>
+              <span className="py-2 text-start text-sm px-2 flex items-center gap-3">
+                Entry at <FaClock />
+              </span>
+              <span className="py-2 text-start text-sm px-2 flex items-center gap-3">
+                Exit at <FaClock />
+              </span>
             </p>
             {vehicles.map((vehicle) => (
               <p
@@ -107,7 +118,7 @@ const AllVehicles = () => {
               >
                 <span className="flex col-span-1 justify-center">
                   <span
-                    className={`text-nowrap rounded-md m-1 py-2 px-2 cursor-pointer flex items-center gap-2`}
+                    className={`text-nowrap rounded-md py-2 px-2 cursor-pointer flex items-center gap-2`}
                     onClick={() => {
                       navigate(`/plate-number/${vehicle.id}`);
                     }}
