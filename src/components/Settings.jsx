@@ -264,6 +264,8 @@ const Settings = () => {
             onClose={() => setShowModal(false)}
             onSubmit={handlePasswordChange}
             loading={loading}
+            text={"Submit"}
+            hide={false}
           >
             <h2 className="text-lg font-semibold mb-4">Change Password</h2>
             <div className="flex flex-col space-y-4">
@@ -283,6 +285,8 @@ const Settings = () => {
             onClose={() => setShowDeleteModal(false)}
             onSubmit={handleDeleteAccount}
             loading={loading}
+            text="Delete"
+            hide={true}
           >
             <h2 className="text-lg font-semibold mb-4">Delete Account</h2>
             <p className="text-xs text-gray-600 mb-4">

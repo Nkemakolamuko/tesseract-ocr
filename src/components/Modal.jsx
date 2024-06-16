@@ -1,7 +1,7 @@
 import React from "react";
 import { FiLoader } from "react-icons/fi";
 
-const Modal = ({ show, onClose, onSubmit, children, loading }) => {
+const Modal = ({ show, onClose, onSubmit, children, loading, text, hide }) => {
   if (!show) return null;
 
   return (
@@ -21,13 +21,13 @@ const Modal = ({ show, onClose, onSubmit, children, loading }) => {
             disabled={loading}
             onClick={onSubmit}
             className={`bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-700 ${
-              loading && "opacity-70"
-            }`}
+              hide && "hidden"
+            } ${loading && "opacity-70"}`}
           >
             {loading ? (
               <FiLoader className="animate-spin w-6 h-6" />
             ) : (
-              <span>Submit</span>
+              <span>{text}</span>
             )}
           </button>
         </div>
