@@ -108,7 +108,7 @@ const Header = () => {
             onChange={(e) => setSearchTerm(e.target.value)}
           />
           <p
-            className="px-2 py-3 w-[10%] flex items-center justify-center bg-rose-50"
+            className="px-2 py-3 w-[10%] flex items-center justify-center bg-rose-50 text-rose-500"
             onClick={() => setSearch(false)}
           >
             <FaTimes />
