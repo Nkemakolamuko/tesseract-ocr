@@ -127,35 +127,45 @@ const AllVehicles = () => {
                 Exit at <FaClock />
               </span>
             </div>
-            {filteredVehicles
-              .sort((a, b) => b.createdAt - a.createdAt)
-              .map((vehicle) => (
-                <div
-                  key={vehicle.id}
-                  className="grid grid-cols-3 items-center text-center w-full px-4 divide-x border-b text-sm"
-                >
-                  <span className="flex col-span-1 justify-center">
-                    <span
-                      className="text-nowrap rounded-md py-2 px-2 cursor-pointer flex items-center gap-2"
-                      onClick={() => navigate(`/plate-number/${vehicle.id}`)}
-                    >
-                      {vehicle.phoneNumber} <FaAngleRight />
+
+            {filteredVehicles.length > 0 ? (
+              filteredVehicles
+                .sort((a, b) => b.createdAt - a.createdAt)
+                .map((vehicle) => (
+                  <div
+                    key={vehicle.id}
+                    className="grid grid-cols-3 items-center text-center w-full px-4 divide-x border-b text-sm"
+                  >
+                    <span className="flex col-span-1 justify-center">
+                      <span
+                        className="text-nowrap rounded-md py-2 px-2 cursor-pointer flex items-center gap-2"
+                        onClick={() => navigate(`/plate-number/${vehicle.id}`)}
+                      >
+                        {vehicle.phoneNumber} <FaAngleRight />
+                      </span>
                     </span>
-                  </span>
-                  <span className="py-2">
-                    {new Date(
-                      vehicle.createdAt.seconds * 1000
-                    ).toLocaleTimeString()}
-                  </span>
-                  <span className="py-2">
-                    {vehicle.exitedAt
-                      ? new Date(
-                          vehicle.exitedAt.seconds * 1000
-                        ).toLocaleTimeString()
-                      : "-"}
-                  </span>
-                </div>
-              ))}
+                    <span className="py-2">
+                      {new Date(
+                        vehicle.createdAt.seconds * 1000
+                      ).toLocaleTimeString()}
+                    </span>
+                    <span className="py-2">
+                      {vehicle.exitedAt
+                        ? new Date(
+                            vehicle.exitedAt.seconds * 1000
+                          ).toLocaleTimeString()
+                        : "-"}
+                    </span>
+                  </div>
+                ))
+            ) : (
+              <span
+                colSpan="2"
+                className="py-2 px-4 border-b text-center text-sm"
+              >
+                No entries for today.
+              </span>
+            )}
           </div>
         </>
       )}
