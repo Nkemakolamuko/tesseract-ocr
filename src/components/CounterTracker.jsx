@@ -4,8 +4,25 @@ import { useAuth } from "../UserContext";
 import { FaTruckMoving } from "react-icons/fa6";
 import { Link } from "react-router-dom";
 
-const CounterTracker = () => {
-  const { plateNumbers, exitCount } = useAuth();
+const CounterTracker = ({ dateFilter }) => {
+  const { plateNumbers } = useAuth();
+
+  const filterPlateNumbers = () => {
+    if (dateFilter === "Today") {
+      const today = new Date();
+      today.setHours(0, 0, 0, 0);
+      return plateNumbers.filter(
+        (entry) => new Date(entry.createdAt.seconds * 1000) >= today
+      );
+    }
+    return plateNumbers;
+  };
+
+  const filteredPlateNumbers = filterPlateNumbers();
+  const entryCount = filteredPlateNumbers.length;
+  const exitCount = filteredPlateNumbers.filter(
+    (plate) => plate.exitedAt
+  ).length;
 
   return (
     <Link
@@ -21,7 +38,7 @@ const CounterTracker = () => {
         <FaTruckMoving />
       </p>
       <p className="px-4 py-4 text-center border-t flex items-center justify-center gap-2">
-        <span className="font-semibold text-lg">{plateNumbers.length}</span>
+        <span className="font-semibold text-lg">{entryCount}</span>
         <FaGreaterThan className="opacity-50 text-2xl hidden" />
       </p>
       <p className="px-4 py-4 text-center border-t flex items-center justify-center gap-2">

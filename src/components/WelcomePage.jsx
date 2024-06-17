@@ -24,6 +24,7 @@ const WelcomePage = () => {
   const [dataLoading, setDataLoading] = useState(true);
   const [showModal, setShowModal] = useState(false);
   const [deleteId, setDeleteId] = useState(null);
+  const [dateFilter, setDateFilter] = useState("Today");
 
   useEffect(() => {
     const currentHour = new Date().getHours();
@@ -56,6 +57,19 @@ const WelcomePage = () => {
     setDeleteId(id);
     setShowModal(true);
   };
+
+  const filterPlateNumbers = () => {
+    if (dateFilter === "Today") {
+      const today = new Date();
+      today.setHours(0, 0, 0, 0);
+      return plateNumbers.filter(
+        (entry) => new Date(entry.createdAt.seconds * 1000) >= today
+      );
+    }
+    return plateNumbers;
+  };
+
+  const filteredPlateNumbers = filterPlateNumbers();
 
   if (loading || dataLoading) {
     return (
@@ -111,11 +125,21 @@ const WelcomePage = () => {
       {!start && (
         <div className="p-2">
           <p className="text-xs md:text-base">Click on any to see all.</p>
-          <CounterTracker />
+          <CounterTracker dateFilter={dateFilter} />
           <div className="mt-4 border">
-            <h3 className="font-medium p-2 text-xs">
-              Plate Numbers and Entry Times
-            </h3>
+            <div className="flex justify-between items-center p-2">
+              <h3 className="font-medium text-xs">
+                Plate Numbers and Entry Times
+              </h3>
+              <select
+                className="border border-gray-300 rounded-md p-1 outline-none"
+                value={dateFilter}
+                onChange={(e) => setDateFilter(e.target.value)}
+              >
+                <option value="All">All</option>
+                <option value="Today">Today</option>
+              </select>
+            </div>
             <table className="min-w-full bg-white">
               <thead>
                 <tr className="bg-slate-300 divide-x">
@@ -128,26 +152,41 @@ const WelcomePage = () => {
                 </tr>
               </thead>
               <tbody>
-                {plateNumbers.map((entry) => (
-                  <tr key={entry.id} className="divide-x">
-                    <td className="py-2 px-4 border-b text-center text-sm">
-                      {entry.phoneNumber.toUpperCase()}
-                    </td>
-                    <td className="py-2 px-4 border-b text-center text-sm flex items-center justify-center gap-5">
-                      <span>
-                        {new Date(
-                          entry.createdAt.seconds * 1000
-                        ).toLocaleTimeString()}
-                      </span>
-                      <span
-                        className="p-2 bg-rose-50 text-rose-500 rounded-full cursor-pointer"
-                        onClick={() => confirmDelete(entry.id)}
-                      >
-                        <FaTrash />
-                      </span>
+                {filteredPlateNumbers.length > 0 ? (
+                  filteredPlateNumbers
+                    .sort((a, b) => {
+                      return b.createdAt - a.createdAt;
+                    })
+                    .map((entry) => (
+                      <tr key={entry.id} className="divide-x">
+                        <td className="py-2 px-4 border-b text-center text-sm">
+                          {entry.phoneNumber.toUpperCase()}
+                        </td>
+                        <td className="py-2 px-4 border-b text-center text-sm flex items-center justify-center gap-5">
+                          <span>
+                            {new Date(
+                              entry.createdAt.seconds * 1000
+                            ).toLocaleTimeString()}
+                          </span>
+                          <span
+                            className="p-2 bg-rose-50 text-rose-500 rounded-full cursor-pointer"
+                            onClick={() => confirmDelete(entry.id)}
+                          >
+                            <FaTrash />
+                          </span>
+                        </td>
+                      </tr>
+                    ))
+                ) : (
+                  <tr>
+                    <td
+                      colSpan="2"
+                      className="py-2 px-4 border-b text-center text-sm"
+                    >
+                      No entries for today.
                     </td>
                   </tr>
-                ))}
+                )}
               </tbody>
             </table>
           </div>

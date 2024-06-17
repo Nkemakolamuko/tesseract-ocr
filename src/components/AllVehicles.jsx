@@ -25,6 +25,7 @@ const AllVehicles = () => {
   const [vehicles, setVehicles] = useState([]);
   const [loading, setLoading] = useState(true);
   const [loadingIds, setLoadingIds] = useState([]);
+  const [dateFilter, setDateFilter] = useState("Today");
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -76,33 +77,48 @@ const AllVehicles = () => {
     }
   };
 
+  const filterVehicles = () => {
+    if (dateFilter === "Today") {
+      const today = new Date();
+      today.setHours(0, 0, 0, 0);
+      return vehicles.filter(
+        (vehicle) => new Date(vehicle.createdAt.seconds * 1000) >= today
+      );
+    }
+    return vehicles;
+  };
+
+  const filteredVehicles = filterVehicles();
+
   return (
     <div className="w-full bg-white py-6 px-2 h-screen">
       <h2 className="mb-2 font-medium">All Vehicles</h2>
       {loading ? (
-        // <div className="w-full flex justify-center items-center h-screen">
-        //   <div className="loader"></div>
-        // </div>
         <div className="w-full h-screen flex justify-center items-center">
           <FiLoader className="w-24 h-24 animate-spin" />
         </div>
       ) : (
-        <div className="flex flex-col w-full md:w-[60%] shadow-md rounded divide-y">
-          <p className="px-2 py-2 text-center flex items-center gap-2">
-            List of today's entries:{" "}
-            <span className="text-[#0000f1] font-semibold">
-              {vehicles.length}
-            </span>{" "}
-          </p>
-
-          <p className="text-xs px-2 py-2">
-            Click on any Car ID for quick actions
-          </p>
-
-          <div className="grid grid-cols-1">
-            <p className="grid grid-cols-3 items-center text-center w-full bg-gray-200 px-2 divide-x font-medium">
+        <>
+          <div className="flex justify-between items-center mb-4">
+            <p className="text-sm">
+              List of entries:{" "}
+              <span className="text-[#0000f1] font-semibold">
+                {filteredVehicles.length}
+              </span>
+            </p>
+            <select
+              className="border border-gray-300 rounded-md p-1 outline-none"
+              value={dateFilter}
+              onChange={(e) => setDateFilter(e.target.value)}
+            >
+              <option value="All">All</option>
+              <option value="Today">Today</option>
+            </select>
+          </div>
+          <div className="flex flex-col w-full md:w-[60%] shadow-md rounded divide-y">
+            <div className="grid grid-cols-3 items-center text-center w-full bg-gray-200 px-2 divide-x font-medium">
               <span className="py-2 text-start text-sm px-2 flex items-center gap-3">
-                Car ID <FaIdCard />{" "}
+                Car ID <FaIdCard />
               </span>
               <span className="py-2 text-start text-sm px-2 flex items-center gap-3">
                 Entry at <FaClock />
@@ -110,38 +126,38 @@ const AllVehicles = () => {
               <span className="py-2 text-start text-sm px-2 flex items-center gap-3">
                 Exit at <FaClock />
               </span>
-            </p>
-            {vehicles.map((vehicle) => (
-              <p
-                key={vehicle.id}
-                className="grid grid-cols-3 items-center text-center w-full px-4 divide-x border-b text-sm"
-              >
-                <span className="flex col-span-1 justify-center">
-                  <span
-                    className={`text-nowrap rounded-md py-2 px-2 cursor-pointer flex items-center gap-2`}
-                    onClick={() => {
-                      navigate(`/plate-number/${vehicle.id}`);
-                    }}
-                  >
-                    {vehicle.phoneNumber} <FaAngleRight />
+            </div>
+            {filteredVehicles
+              .sort((a, b) => b.createdAt - a.createdAt)
+              .map((vehicle) => (
+                <div
+                  key={vehicle.id}
+                  className="grid grid-cols-3 items-center text-center w-full px-4 divide-x border-b text-sm"
+                >
+                  <span className="flex col-span-1 justify-center">
+                    <span
+                      className="text-nowrap rounded-md py-2 px-2 cursor-pointer flex items-center gap-2"
+                      onClick={() => navigate(`/plate-number/${vehicle.id}`)}
+                    >
+                      {vehicle.phoneNumber} <FaAngleRight />
+                    </span>
                   </span>
-                </span>
-                <span className="py-2">
-                  {new Date(
-                    vehicle.createdAt.seconds * 1000
-                  ).toLocaleTimeString()}
-                </span>
-                <span className="py-2">
-                  {vehicle.exitedAt
-                    ? new Date(
-                        vehicle.exitedAt.seconds * 1000
-                      ).toLocaleTimeString()
-                    : "-"}
-                </span>
-              </p>
-            ))}
+                  <span className="py-2">
+                    {new Date(
+                      vehicle.createdAt.seconds * 1000
+                    ).toLocaleTimeString()}
+                  </span>
+                  <span className="py-2">
+                    {vehicle.exitedAt
+                      ? new Date(
+                          vehicle.exitedAt.seconds * 1000
+                        ).toLocaleTimeString()
+                      : "-"}
+                  </span>
+                </div>
+              ))}
           </div>
-        </div>
+        </>
       )}
     </div>
   );
