@@ -39,7 +39,12 @@ const Header = () => {
     const minutes = date.getMinutes().toString().padStart(2, "0");
     const seconds = date.getSeconds().toString().padStart(2, "0");
     const ampm = date.getHours() >= 12 ? "PM" : "AM";
-    return `${hours}:${minutes}:${seconds} ${ampm}`;
+    return (
+      <p className="grid grid-cols-6 items-center text-nowrap justify-center text-center">
+        <span>{hours}</span>:<span>{minutes}</span>:<span>{seconds}</span>{" "}
+        <span>{ampm}</span>
+      </p>
+    );
   };
 
   const formatDate = (date) => {
@@ -121,8 +126,8 @@ const Header = () => {
       {!search && (
         <div className="grid grid-cols-5 items-center gap-2">
           <div className="flex items-center text-slate-600 gap-2 text-nowrap col-span-5">
-            <p className="text-sm">{formatDate(currentTime)}</p>
-            <p className="text-sm">{formatTime(currentTime)}</p>
+            <p className="text-sm hidden md:flex">{formatDate(currentTime)}</p>
+            <div className="text-sm">{formatTime(currentTime)}</div>
           </div>
 
           {/* <div className="flex items-center gap-2"> */}
