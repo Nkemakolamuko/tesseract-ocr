@@ -134,7 +134,7 @@ const Settings = () => {
                     type="email"
                     value={editedEmail}
                     onChange={(e) => setEditedEmail(e.target.value)}
-                    className="border w-fit border-gray-300 rounded-lg px-2 py-1 outline-none focus:border-blue-300 text-sm  transition-all duration-300"
+                    className="border w-[175px] border-gray-300 rounded-lg px-2 py-1 outline-none focus:border-blue-300 text-sm  transition-all duration-300"
                   />
                 </div>
               ) : (
