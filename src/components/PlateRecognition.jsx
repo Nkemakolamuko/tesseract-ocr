@@ -153,7 +153,7 @@ function PlateRecognition() {
         !crop && "border-t p-2"
       } w-full mx-auto relative`}
     >
-      <Toaster />
+      {/* <Toaster /> */}
       {crop && (
         <ImageCropper
           image={imagePath}

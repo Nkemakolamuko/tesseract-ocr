@@ -1,22 +1,31 @@
 import React, { useEffect, useState } from "react";
 import { FiLoader } from "react-icons/fi";
 import { db } from "../firebase";
-import { collection, getDocs } from "firebase/firestore";
+import { collection, query, where, getDocs } from "firebase/firestore";
+import { useAuth } from "../UserContext";
 
 const History = () => {
   const [historyData, setHistoryData] = useState([]);
   const [loading, setLoading] = useState(true);
+  const { currentUser } = useAuth(); // Get the current user
 
   useEffect(() => {
     const fetchHistoryData = async () => {
       setLoading(true);
       try {
-        const querySnapshot = await getDocs(collection(db, "history"));
-        const data = querySnapshot.docs.map((doc) => ({
-          id: doc.id,
-          ...doc.data(),
-        }));
-        setHistoryData(data);
+        if (currentUser) {
+          // Query to fetch history data for the current user
+          const q = query(
+            collection(db, "history"),
+            where("userId", "==", currentUser.uid)
+          );
+          const querySnapshot = await getDocs(q);
+          const data = querySnapshot.docs.map((doc) => ({
+            id: doc.id,
+            ...doc.data(),
+          }));
+          setHistoryData(data);
+        }
       } catch (error) {
         console.error("Error fetching history data:", error);
       }
@@ -24,7 +33,7 @@ const History = () => {
     };
 
     fetchHistoryData();
-  }, []);
+  }, [currentUser]);
 
   if (loading) {
     return (
