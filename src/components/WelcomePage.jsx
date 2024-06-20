@@ -84,7 +84,7 @@ const WelcomePage = () => {
       <Toaster />
       <div className="p-2 flex flex-col gap-3 my-2">
         {!start && (
-          <div className="bg-white py-4 px-2 rounded-lg shadow-sm w-full max-w-md">
+          <div className="bg-white py-4 px-2 rounded-lg md:rounded-none shadow-sm md:shadow-none md:border-b w-full max-w-md">
             {currentUser && (
               <h2 className="md:text-2xl text-lg font-bold mb-2">
                 {userData && (
@@ -124,7 +124,7 @@ const WelcomePage = () => {
 
       {!start && (
         <div className="p-2">
-          <p className="text-xs md:text-base">Click on any to see all.</p>
+          <p className="text-xs">Click on any to see all.</p>
           <CounterTracker dateFilter={dateFilter} />
           <div className="mt-4 border">
             <div className="flex justify-between items-center p-2">

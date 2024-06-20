@@ -90,21 +90,21 @@ const Header = () => {
       {!search && (
         <div className="flex items-center gap-2">
           <GiHamburgerMenu
-            className="w-6 h-6 cursor-pointer col-span-1"
+            className="w-8 h-8 cursor-pointer col-span-1"
             onClick={toggleNav}
           />
 
           <p
-            className="flex items-center gap-2 bg-slate-200 py-1 px-4 md:py-2 rounded-md col-span-1 cursor-pointer"
+            className="flex items-center gap-2 border py-2 px-4 md:py-2 rounded-full col-span-1 cursor-pointer"
             onClick={() => setSearch(true)}
           >
-            <FaSearch />
             <span className="text-sm">Search</span>
+            <FaSearch className="opacity-75" />
           </p>
         </div>
       )}
       {search && (
-        <div className="flex items-center border rounded-md w-full justify-between text-sm">
+        <div className="flex items-center border rounded-full w-full justify-between text-sm overflow-hidden">
           <input
             type="text"
             ref={searchRef}
