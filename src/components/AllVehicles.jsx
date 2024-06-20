@@ -99,7 +99,7 @@ const AllVehicles = () => {
         </div>
       ) : (
         <>
-          <div className="flex justify-between items-center mb-4">
+          <div className="flex justify-between items-center mb-2">
             <p className="text-sm">
               List of entries:{" "}
               <span className="text-[#0000f1] font-semibold">
@@ -115,6 +115,9 @@ const AllVehicles = () => {
               <option value="Today">Today</option>
             </select>
           </div>
+          <p className="text-xs">
+            Click on any <b>Car ID</b> for quick actions.
+          </p>
           <div className="flex flex-col w-full md:w-[60%] shadow-md rounded divide-y">
             <div className="grid grid-cols-3 items-center text-center w-full bg-gray-200 px-2 divide-x font-medium">
               <span className="py-2 text-start text-sm px-2 flex items-center gap-3">
@@ -136,20 +139,20 @@ const AllVehicles = () => {
                     key={vehicle.id}
                     className="grid grid-cols-3 items-center text-center w-full px-4 divide-x border-b text-sm"
                   >
-                    <span className="flex col-span-1 justify-center">
+                    <span className="flex col-span-1 justify-start">
                       <span
-                        className="text-nowrap rounded-md py-2 px-2 cursor-pointer flex items-center gap-2"
+                        className="text-nowrap rounded-md py-2 cursor-pointer flex items-center gap-2"
                         onClick={() => navigate(`/plate-number/${vehicle.id}`)}
                       >
                         {vehicle.phoneNumber} <FaAngleRight />
                       </span>
                     </span>
-                    <span className="py-2">
+                    <span className="py-2 flex items-center justify-start px-1">
                       {new Date(
                         vehicle.createdAt.seconds * 1000
                       ).toLocaleTimeString()}
                     </span>
-                    <span className="py-2">
+                    <span className="py-2 flex items-center justify-start px-1">
                       {vehicle.exitedAt
                         ? new Date(
                             vehicle.exitedAt.seconds * 1000
