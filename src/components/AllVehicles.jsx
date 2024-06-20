@@ -99,7 +99,7 @@ const AllVehicles = () => {
         </div>
       ) : (
         <>
-          <div className="flex justify-between items-center mb-2">
+          <div className="flex justify-between items-center mb-2 md:w-[60%]">
             <p className="text-sm">
               List of entries:{" "}
               <span className="text-[#0000f1] font-semibold">
