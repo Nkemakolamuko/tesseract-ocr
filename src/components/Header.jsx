@@ -7,6 +7,7 @@ import { FaSearch, FaTimes } from "react-icons/fa";
 import { collection, query, where, getDocs } from "firebase/firestore";
 import debounce from "lodash.debounce";
 import { Link } from "react-router-dom";
+import { FaAngleRight } from "react-icons/fa6";
 
 const Header = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -113,8 +114,11 @@ const Header = () => {
             onChange={(e) => setSearchTerm(e.target.value)}
           />
           <p
-            className="px-2 py-3 w-[10%] flex items-center justify-center bg-rose-50 text-rose-500"
-            onClick={() => setSearch(false)}
+            className="px-2 py-3 w-[10%] flex items-center justify-center bg-rose-50 text-rose-500 cursor-pointer"
+            onClick={() => {
+              setSearch(false);
+              setSearchTerm("");
+            }}
           >
             <FaTimes />
           </p>
@@ -143,16 +147,22 @@ const Header = () => {
       )}
 
       {search && searchResults.length > 0 && (
-        <div className="absolute top-[50px] left-0 w-full bg-white shadow-md border">
-          <ul>
-            {searchResults.map((result) => (
-              <Link to={`/plate-number/${result.id}`} key={result.id}>
-                <li key={result.id} className="p-2 border-b">
-                  {result.phoneNumber}
-                </li>
-              </Link>
-            ))}
-          </ul>
+        <div className="absolute h-screen bg-black/30 top-[50px] left-0 w-full p-2">
+          <div className="w-full bg-white shadow-md border rounded">
+            <ul>
+              {searchResults.map((result) => (
+                <Link to={`/plate-number/${result.id}`} key={result.id}>
+                  <li
+                    key={result.id}
+                    className="p-2 border-b flex items-center justify-between"
+                  >
+                    {result.phoneNumber}
+                    <FaAngleRight />
+                  </li>
+                </Link>
+              ))}
+            </ul>
+          </div>
         </div>
       )}
     </div>
