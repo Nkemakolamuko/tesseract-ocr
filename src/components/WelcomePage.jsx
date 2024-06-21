@@ -84,7 +84,7 @@ const WelcomePage = () => {
       <Toaster />
       <div className="p-2 flex flex-col gap-3 my-2">
         {!start && (
-          <div className="bg-white py-4 px-2 rounded-lg md:rounded-none shadow-sm md:shadow-none md:border-b w-full max-w-md">
+          <div className="bg-white py-4 px-2 rounded-lg md:rounded-none shadow-sm md:shadow-none md:border-b w-full md:w-[60%]">
             {currentUser && (
               <h2 className="md:text-2xl text-lg font-bold mb-2">
                 {userData && (
