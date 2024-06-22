@@ -111,7 +111,7 @@ function PlateRecognition() {
       // Check for duplicate plate number
       const q = query(
         collection(db, "phoneNumbers"),
-        where("phoneNumber", "==", text)
+        where("phoneNumber", "==", text.toLocaleLowerCase())
       );
       const querySnapshot = await getDocs(q);
 
@@ -123,7 +123,7 @@ function PlateRecognition() {
 
       const entry = {
         userId: currentUser.uid,
-        phoneNumber: text,
+        phoneNumber: text.toLocaleLowerCase(),
         createdAt: Timestamp.now(),
       };
 

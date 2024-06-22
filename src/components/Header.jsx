@@ -67,16 +67,21 @@ const Header = () => {
       setTermLoading(true);
       const q = query(
         collection(db, "phoneNumbers"),
-        where("userId", "==", currentUser.uid),
-        where("phoneNumber", ">=", term),
-        where("phoneNumber", "<=", term + "\uf8ff")
+        where("userId", "==", currentUser.uid)
+        // where("phoneNumber", ">=", term),
+        // where("phoneNumber", "<=", term + "\uf8ff")
       );
       const querySnapshot = await getDocs(q);
       const results = querySnapshot.docs.map((doc) => ({
         id: doc.id,
         ...doc.data(),
       }));
-      setSearchResults(results);
+
+      const filteredResults = results.filter((result) =>
+        result.phoneNumber.toLowerCase().includes(term.toLowerCase())
+      );
+
+      setSearchResults(filteredResults);
       setTermLoading(false);
       setSearchPerformed(true);
     } catch (error) {
@@ -125,7 +130,7 @@ const Header = () => {
               ref={searchRef}
               className="py-2 px-2 outline-none w-full"
               placeholder="Eg: KUJ-345UK"
-              value={searchTerm}
+              value={searchTerm.toLocaleLowerCase()}
               onChange={(e) => setSearchTerm(e.target.value)}
             />
           </div>
