@@ -2,20 +2,22 @@ import React, { useState, useEffect, useCallback, useRef } from "react";
 import { GiHamburgerMenu } from "react-icons/gi";
 import Nav from "./Nav";
 import { useAuth } from "../UserContext";
-import { auth, db } from "../firebase";
+import { db } from "../firebase";
 import { FaSearch, FaTimes } from "react-icons/fa";
 import { collection, query, where, getDocs } from "firebase/firestore";
 import debounce from "lodash.debounce";
 import { Link } from "react-router-dom";
-import { FaAngleRight } from "react-icons/fa6";
+import { FaAngleRight, FaSpinner } from "react-icons/fa6";
 
 const Header = () => {
   const [isOpen, setIsOpen] = useState(false);
-  const { currentUser, userData, loading } = useAuth();
+  const { currentUser } = useAuth();
   const [currentTime, setCurrentTime] = useState(new Date());
   const [search, setSearch] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
   const [searchResults, setSearchResults] = useState([]);
+  const [termLoading, setTermLoading] = useState(false);
+  const [searchPerformed, setSearchPerformed] = useState(false);
 
   const searchRef = useRef(null);
 
@@ -55,13 +57,17 @@ const Header = () => {
 
   const performSearch = async (term) => {
     if (term.trim() === "") {
+      setTermLoading(false);
       setSearchResults([]);
+      setSearchPerformed(false);
       return;
     }
 
     try {
+      setTermLoading(true);
       const q = query(
         collection(db, "phoneNumbers"),
+        where("userId", "==", currentUser.uid),
         where("phoneNumber", ">=", term),
         where("phoneNumber", "<=", term + "\uf8ff")
       );
@@ -71,8 +77,12 @@ const Header = () => {
         ...doc.data(),
       }));
       setSearchResults(results);
+      setTermLoading(false);
+      setSearchPerformed(true);
     } catch (error) {
       console.error("Error searching documents: ", error);
+      setTermLoading(false);
+      setSearchPerformed(true);
     }
   };
 
@@ -82,6 +92,7 @@ const Header = () => {
   );
 
   useEffect(() => {
+    setTermLoading(true);
     debouncedSearch(searchTerm);
   }, [searchTerm, debouncedSearch]);
 
@@ -105,19 +116,26 @@ const Header = () => {
       )}
       {search && (
         <div className="flex items-center border rounded-full w-full justify-between text-sm overflow-hidden">
-          <input
-            type="text"
-            ref={searchRef}
-            className="py-2 px-2 outline-none w-[90%]"
-            placeholder="Eg: KUJ-345UK"
-            value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
-          />
+          <div className="flex items-center w-[90%]">
+            {termLoading && (
+              <FaSpinner className="animate-spin ml-2 text-gray-500" />
+            )}
+            <input
+              type="text"
+              ref={searchRef}
+              className="py-2 px-2 outline-none w-full"
+              placeholder="Eg: KUJ-345UK"
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+            />
+          </div>
           <p
             className="px-2 py-3 w-[10%] flex items-center justify-center bg-rose-50 text-rose-500 cursor-pointer"
             onClick={() => {
               setSearch(false);
               setSearchTerm("");
+              setSearchResults([]);
+              setSearchPerformed(false);
             }}
           >
             <FaTimes />
@@ -133,18 +151,19 @@ const Header = () => {
             <p className="text-sm hidden md:flex">{formatDate(currentTime)}</p>
             <div className="text-sm">{formatTime(currentTime)}</div>
           </div>
-
-          {/* <div className="flex items-center gap-2"> */}
-          {/* <div className="rounded-full border-2 overflow-hidden w-fit col-span-1">
-            <img
-              src="https://images.pexels.com/photos/3025593/pexels-photo-3025593.jpeg?auto=compress&cs=tinysrgb&w=600"
-              alt="Church image"
-              className="w-[30px] h-[30px]"
-            />
-          </div> */}
-          {/* </div> */}
         </div>
       )}
+
+      {search &&
+        searchPerformed &&
+        !termLoading &&
+        searchResults.length === 0 && (
+          <div className="absolute h-screen bg-black/30 top-[50px] left-0 w-full p-2">
+            <div className="w-full bg-white shadow-md border rounded p-4">
+              <p className="text-center">No Plate Number found</p>
+            </div>
+          </div>
+        )}
 
       {search && searchResults.length > 0 && (
         <div className="absolute h-screen bg-black/30 top-[50px] left-0 w-full p-2">
