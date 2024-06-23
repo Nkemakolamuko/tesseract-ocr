@@ -131,14 +131,18 @@ const WelcomePage = () => {
               <h3 className="font-medium text-xs">
                 Plate Numbers and Entry Times
               </h3>
-              <select
-                className="border border-gray-300 rounded-md p-1 outline-none"
-                value={dateFilter}
-                onChange={(e) => setDateFilter(e.target.value)}
-              >
-                <option value="All">All</option>
-                <option value="Today">Today</option>
-              </select>
+              <div className="flex items-center gap-2 text-sm">
+                <p>Filter :</p>
+
+                <select
+                  className="border border-gray-300 rounded-md outline-none"
+                  value={dateFilter}
+                  onChange={(e) => setDateFilter(e.target.value)}
+                >
+                  <option value="All">All</option>
+                  <option value="Today">Today</option>
+                </select>
+              </div>
             </div>
             <table className="min-w-full bg-white">
               <thead>

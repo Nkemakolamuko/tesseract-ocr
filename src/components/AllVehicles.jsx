@@ -119,7 +119,7 @@ const AllVehicles = () => {
             Click on any <b>Car ID</b> for quick actions.
           </p>
           <div className="flex flex-col w-full md:w-[60%] shadow-md rounded divide-y">
-            <div className="grid grid-cols-3 items-center text-center w-full bg-gray-200 px-2 divide-x font-medium">
+            <div className="grid grid-cols-3 items-center text-center w-full bg-gray-200 px-4 divide-x divide-black/30 font-medium">
               <span className="py-2 text-start text-sm px-2 flex items-center gap-3">
                 Car ID <FaIdCard />
               </span>
@@ -139,14 +139,14 @@ const AllVehicles = () => {
                     key={vehicle.id}
                     className="grid grid-cols-3 items-center text-center w-full px-4 divide-x border-b text-sm"
                   >
-                    <span className="flex col-span-1 justify-start">
-                      <span
-                        className="text-nowrap rounded-md py-2 cursor-pointer flex items-center gap-2"
-                        onClick={() => navigate(`/plate-number/${vehicle.id}`)}
-                      >
-                        {vehicle.phoneNumber} <FaAngleRight />
-                      </span>
+                    {/* <span className=""> */}
+                    <span
+                      className="text-nowrap rounded-md py-2 cursor-pointer flex items-center gap-2 col-span-1 justify-between pr-2 md:pr-5"
+                      onClick={() => navigate(`/plate-number/${vehicle.id}`)}
+                    >
+                      {vehicle.phoneNumber} <FaAngleRight />
                     </span>
+                    {/* </span> */}
                     <span className="py-2 flex items-center justify-start px-1">
                       {new Date(
                         vehicle.createdAt.seconds * 1000

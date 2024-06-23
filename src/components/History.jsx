@@ -48,26 +48,29 @@ const History = () => {
       <h2 className="mb-2 font-medium">History</h2>
       {historyData.length > 0 ? (
         <div className="overflow-x-auto">
-          <table className="min-w-full bg-white">
+          <table className="w-full md:w-[60%] bg-white md:border rounded">
             <thead>
-              <tr className="bg-gray-200 text-sm">
-                <th className="py-2 px-4 border-b text-start">Car ID</th>
-                <th className="py-2 px-4 border-b text-start">Entry Time</th>
-                <th className="py-2 px-4 border-b text-start">Exit Time</th>
+              <tr className="bg-gray-200 text-sm rounded-t divide-x divide-black/30 text-nowrap">
+                <th className="py-2 px-4 text-start">Car ID</th>
+                <th className="py-2 px-4 text-start">Entry Time</th>
+                <th className="py-2 px-4 text-start">Exit Time</th>
               </tr>
             </thead>
             <tbody>
-              {historyData.map((entry) => (
-                <tr key={entry.id}>
-                  <td className="py-2 px-4 border-b text-sm">
-                    {entry.phoneNumber}
-                  </td>
-                  <td className="py-2 px-4 border-b text-sm">
+              {historyData.map((entry, i) => (
+                <tr
+                  key={entry.id}
+                  className={`divide-x divide-black/30 ${
+                    i % 2 !== 0 && "bg-slate-100"
+                  }`}
+                >
+                  <td className="py-2 px-4 text-sm">{entry.phoneNumber}</td>
+                  <td className="py-2 px-4 text-sm">
                     {new Date(
                       entry?.createdAt?.seconds * 1000
                     ).toLocaleString()}
                   </td>
-                  <td className="py-2 px-4 border-b text-sm">
+                  <td className="py-2 px-4 text-sm">
                     {entry.exitedAt
                       ? new Date(entry.exitedAt.seconds * 1000).toLocaleString()
                       : "N/A"}
